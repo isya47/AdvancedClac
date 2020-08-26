@@ -31,6 +31,7 @@ namespace AdvancedClac
         { 
             var reader = new StringReader(expression);
             const string allowedCharacters = @"[a-z]";
+            const string allowedOperators = @"[+ - * / | & ^ ~]";
             var Num = TokenType.Number;
 
             while (reader.Peek() != -1)
@@ -43,12 +44,16 @@ namespace AdvancedClac
                     continue;
                 }
                 
-                if ((Regex.IsMatch(c.ToString(), allowedCharacters, RegexOptions.IgnoreCase)))
+                if (Regex.IsMatch(c.ToString(), allowedCharacters, RegexOptions.IgnoreCase))
                 {
                     tokens.Add(new Token(0, c.ToString()));
                     reader.Read();
                 }
-                //else if(){}
+                else if (Regex.IsMatch(c.ToString(), allowedOperators, RegexOptions.IgnoreCase))
+                {
+                    tokens.Add(new Token(0, c.ToString()));
+                    reader.Read();
+                }
                 else
 
                     throw new Exception("Unknown character in expression: " + c);

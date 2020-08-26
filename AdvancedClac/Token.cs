@@ -4,7 +4,7 @@ namespace AdvancedClac
 {
     public class Token
     {
-        private readonly int _value;
+        private  int _value;
         private readonly string _operation;
         public Token(int value, string operation)
         {
@@ -13,10 +13,15 @@ namespace AdvancedClac
         }
         
         public int GetValue
-        { 
+        {
             get { return _value; }
         }
-        
+
+        public void SetValue(int newValue)
+        {
+            _value = newValue;
+        }
+
         public String GetOperation
         { 
             get { return _operation; }
