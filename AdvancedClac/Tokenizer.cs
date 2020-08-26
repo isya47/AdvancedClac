@@ -35,7 +35,7 @@ namespace AdvancedClac
 
             while (reader.Peek() != -1)
             {
-                var c = (string) reader.Peek();
+                var c = (char) reader.Peek();
 
                 if (Char.IsWhiteSpace(c))
                 {
@@ -43,9 +43,9 @@ namespace AdvancedClac
                     continue;
                 }
                 
-                if ((Regex.IsMatch(c, allowedCharacters, RegexOptions.IgnoreCase)))
+                if ((Regex.IsMatch(c.ToString(), allowedCharacters, RegexOptions.IgnoreCase)))
                 {
-                    tokens.Add(new Token(0, c));
+                    tokens.Add(new Token(0, c.ToString()));
                     reader.Read();
                 }
                 //else if(){}

@@ -1,13 +1,15 @@
 ﻿using System;
-
-namespace AdvancedClac
-{
-    class Program
+using AdvancedClac;
+class Program
     {
         static void Main(string[] args)
         {
             Tokenizer TL = new Tokenizer();
-            TL.Scan("a bc");
+            foreach (var ystem in TL.Scan("a b cd"))
+            {
+                Console.WriteLine(ystem.GetOperation);
+                Console.WriteLine(ystem.GetValue);
+            }
+            
         }
     }
-}
