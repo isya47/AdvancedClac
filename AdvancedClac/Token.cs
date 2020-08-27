@@ -11,7 +11,6 @@ namespace AdvancedClac
             _value = value;
             _operation = operation;
         }
-        
         public int GetValue
         {
             get { return _value; }

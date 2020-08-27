@@ -10,6 +10,5 @@ class Program
                 Console.WriteLine(ystem.GetOperation);
                 Console.WriteLine(ystem.GetValue);
             }
-            
         }
     }
