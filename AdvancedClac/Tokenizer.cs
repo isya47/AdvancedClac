@@ -31,7 +31,7 @@ namespace AdvancedClac
         { 
             var reader = new StringReader(expression);
             const string allowedCharacters = @"[a-z]";
-            const string allowedOperators = @"[- + * / | & ^ ~]";
+            const string allowedOperators = @"[- + * / | & ^ ~ ( )]";
             var Num = TokenType.Number;
 
             while (reader.Peek() != -1)
