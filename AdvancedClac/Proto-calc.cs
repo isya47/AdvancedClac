@@ -179,7 +179,6 @@ namespace AdvancedClac
                 Console.WriteLine(opera
             nds.Dequeue());
 */
-            
             return(operands);
             
             
