@@ -176,8 +176,10 @@ namespace AdvancedClac
             }
             /*Console.WriteLine(operands.Count);
             while(operands.Count!=0)
-                Console.WriteLine(operands.Dequeue());
+                Console.WriteLine(opera
+            nds.Dequeue());
 */
+            
             return(operands);
             
             
