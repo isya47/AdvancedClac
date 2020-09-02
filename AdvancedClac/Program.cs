@@ -10,7 +10,7 @@ namespace AdvancedClac
             foreach (var ystem in TL.Scan("pow(y,x)+y+ztan(45)"))
             {
                 Console.WriteLine(ystem.GetTokenType);
-                //Console.WriteLine(ystem.GetValue);
+                Console.WriteLine(ystem.GetValue);
             }
         }
     }

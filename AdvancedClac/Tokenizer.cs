@@ -29,10 +29,10 @@ namespace AdvancedClac
                 {
                     if (concatedStr.Length >= 1)
                     {
-                        tokens.Add(new Token(0,concatedStr));
+                        tokens.Add(new Token(concatedStr,"Variables"));
                         concatedStr = "";
                     }
-                    tokens.Add(new Token(0, expression[i].ToString()));
+                    tokens.Add(new Token(expression[i].ToString(), "Operator/Digit"));
                 }
             }
             return tokens;

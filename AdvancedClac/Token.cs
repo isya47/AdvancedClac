@@ -4,25 +4,25 @@ namespace AdvancedClac
 {
     public class Token
     {
-        private  int _value;
+        private  string _value;
         private readonly string _tokenType;
-        public Token(int value, string tokenType)
+        public Token(string value, string tokenType)
         {
             _value = value;
             _tokenType = tokenType;
         }
         
-        public int GetValue
+        public string GetValue
         {
             get { return _value; }
         }
 
-        public void SetValue(int newValue)
+        public void SetValue(string newValue)
         {
             _value = newValue;
         }
 
-        public String GetTokenType
+        public string GetTokenType
         { 
             get { return _tokenType; }
         }
