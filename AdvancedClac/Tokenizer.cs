@@ -1,63 +1,39 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Globalization;
+using System.Linq;
 
 namespace AdvancedClac
 {
     public class Tokenizer
     {
         static List<Token> tokens = new List<Token>();
-        public enum TokenType : ushort
-        {
-            Number,
-            Add,
-            Substract,
-            Multiply,
-            Divide,
-            Pow,
-            Sin,
-            Cos,
-            Abs,
-            Tan,
-            
-            Or,
-            And,
-            Xor,
-            Bitwise
-        }
-        
         public IEnumerable<Token> Scan(string expression)
-        { 
-            var reader = new StringReader(expression);
-            const string allowedCharacters = @"[a-z]";
-            const string allowedOperators = @"[- + * / | & ^ ~ ( )]";
-            var Num = TokenType.Number;
-
-            while (reader.Peek() != -1)
+        {
+            expression = expression.Trim();
+            const string allowedSymbols = @"[- + * / | & ^ ~ ( ) , 0-9]";
+            const string allowedCharacter = @"[a-z]";
+            string concatedStr = "";
+            for (var i = 0; i < expression.Length; i++)
             {
-                var c = (char) reader.Peek();
-
-                if (Char.IsWhiteSpace(c))
+                
+                if (Regex.IsMatch(expression[i].ToString(), allowedCharacter, RegexOptions.IgnoreCase))
                 {
-                    reader.Read();
-                    continue;
+                    concatedStr = String.Concat(concatedStr, expression[i].ToString());
                 }
                 
-                if (Regex.IsMatch(c.ToString(), allowedCharacters, RegexOptions.IgnoreCase))
+                else if (Regex.IsMatch(expression[i].ToString(), allowedSymbols, RegexOptions.IgnoreCase))
                 {
-                    tokens.Add(new Token(0, c.ToString()));
-                    reader.Read();
+                    if (concatedStr.Length >= 1)
+                    {
+                        tokens.Add(new Token(0,concatedStr));
+                        concatedStr = "";
+                    }
+                    tokens.Add(new Token(0, expression[i].ToString()));
                 }
-                else if (Regex.IsMatch(c.ToString(), allowedOperators, RegexOptions.IgnoreCase))
-                {
-                    tokens.Add(new Token(0, c.ToString()));
-                    reader.Read();
-                }
-                else
-
-                    throw new Exception("Unknown character in expression: " + c);
-
             }
             return tokens;
         }

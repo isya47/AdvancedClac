@@ -5,12 +5,13 @@ namespace AdvancedClac
     public class Token
     {
         private  int _value;
-        private readonly string _operation;
-        public Token(int value, string operation)
+        private readonly string _tokenType;
+        public Token(int value, string tokenType)
         {
             _value = value;
-            _operation = operation;
+            _tokenType = tokenType;
         }
+        
         public int GetValue
         {
             get { return _value; }
@@ -21,9 +22,9 @@ namespace AdvancedClac
             _value = newValue;
         }
 
-        public String GetOperation
+        public String GetTokenType
         { 
-            get { return _operation; }
+            get { return _tokenType; }
         }
     }
 }
