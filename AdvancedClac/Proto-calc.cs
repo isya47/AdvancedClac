@@ -1,3 +1,4 @@
+/*
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -178,7 +179,7 @@ namespace AdvancedClac
             while(operands.Count!=0)
                 Console.WriteLine(opera
             nds.Dequeue());
-*/
+/
             return(operands);
             
             
@@ -186,3 +187,5 @@ namespace AdvancedClac
         }
     }
 }
+
+*/
