@@ -15,7 +15,7 @@ namespace AdvancedClac
         {
             try
             {
-                expression = expression.Trim();
+                expression = Regex.Replace(expression, @"\s+", "");
                 if (expression.Length == 0)
                 {
                     throw new Exception("Empty String");
@@ -28,7 +28,7 @@ namespace AdvancedClac
                 
             }
             
-            const string allowedSymbols = @"[- + * / | & ^ ~ ( ) , ]";
+            const string allowedSymbols = @"[- + * / | & ^ ~ ( ) ,]";
             const string allowedCharacter = @"[a-z]";
             const string allowedNumber = @"[0-9]";
             string concatedStr = "";
@@ -61,15 +61,16 @@ namespace AdvancedClac
                             }
                         }
                     }
+
                     //Проверка числового стринга, если в нем что то есть, он токенезируется и флаг отмечается, что текущие цифры
                     //были проверенны
                     if (concatedNumStr.Length >= 1)
                     {
-                        tokens.Add(new Token(concatedNumStr,"Numbers"));
+                        tokens.Add(new Token(concatedNumStr, "Numbers"));
                         //Стринг сбрасывается
                         concatedNumStr = "";
                         flag = true;
-                    } 
+                    }
                     //Проверка на буквенные неизвестные и функции (sin, cos, pow)
                     else if (Regex.IsMatch(expression[i].ToString(), allowedCharacter, RegexOptions.IgnoreCase))
                     {
@@ -77,15 +78,15 @@ namespace AdvancedClac
                         flag = false;
                         //Добавление буквы в стринг
                         concatedStr = String.Concat(concatedStr, expression[i].ToString());
-                    
+
                         //Если вдруг наше уравнение состит только из букв
-                        if (i == expression.Length-1)
+                        if (i == expression.Length - 1)
                         {
-                            tokens.Add(new Token(concatedStr,"Variables"));
+                            tokens.Add(new Token(concatedStr, "Variables"));
                             concatedStr = "";
                         }
                     }
-                
+
                     //Проверка на наличие операторов
                     else if (Regex.IsMatch(expression[i].ToString(), allowedSymbols, RegexOptions.IgnoreCase))
                     {
@@ -94,17 +95,23 @@ namespace AdvancedClac
                         //Если буквенный стринг не пуст, он токенезируется
                         if (concatedStr.Length >= 1)
                         {
-                            tokens.Add(new Token(concatedStr,"Variables"));
+                            tokens.Add(new Token(concatedStr, "Variables"));
                             concatedStr = "";
                         }
+
                         tokens.Add(new Token(expression[i].ToString(), "Operator"));
+                    }
+
+
+                    else if (Regex.IsMatch(expression[i].ToString(), allowedNumber, RegexOptions.IgnoreCase))
+                    {
+                        continue;
                     }
                     else
                     {
-                        throw new Exception("Unknown symbol while tokenizing"); 
+                        throw new Exception($"Unknown Symbol at {i}");
                     }
                 }
-                
                 catch (Exception e)
                 {
                     Console.WriteLine($"Ошибка: {e.Message}");
