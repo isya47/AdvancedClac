@@ -8,8 +8,15 @@ namespace AdvancedClac
         private readonly string _tokenType;
         public Token(string value, string tokenType)
         {
-            _value = value;
-            _tokenType = tokenType;
+            try
+            {
+                _value = value;
+                _tokenType = tokenType;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
         
         public string GetValue
@@ -19,7 +26,16 @@ namespace AdvancedClac
 
         public void SetValue(string newValue)
         {
-            _value = newValue;
+            try
+            {
+                _value = newValue;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                
+            }
+            
         }
 
         public string GetTokenType
