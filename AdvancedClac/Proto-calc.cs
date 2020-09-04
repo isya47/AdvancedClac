@@ -1,36 +1,41 @@
-/*
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection.Emit;
 
-
-//Убрать ПОСТ
 //переформатировать в токены
-//
+//Сделать умножение для переменных по умолчанию 
 namespace AdvancedClac
 {
     public class MathFunc
     {
+        private string type;
+
+        private string value;
+
+        public int newvalue;
+        
+        
         //Метод инициализации данных операторов. Это нужно для более простых вычислении о порядке оператаров.
-        //Не уверен какую структуру тут надо использовать
+        private Dictionary<string, int> initial()
+        {
+            return(new Dictionary<string, int> {{"pow",4},{"sin"},{"cos"},{"tan,3"},{"*",3},{"/",3},{"+",2},{"-",2}});
+        }
+        /*
         private enum precedence : ushort
         {
             Add=2,
             Substract=2,
             Multiply=3,
             Divide=3,
-            Pow=4,
-            Sin=4,
-            Cos=4,
-            Abs,
-            Tan=4,
-            
-            Or,
-            And,
-            Xor,
+            pow=4,
+            sin=4,
+            cos=4,
+            tan=4,
         }
-
+        */
       
         internal int Exec(int num2, int result, char operator1){
 
@@ -92,84 +97,66 @@ namespace AdvancedClac
             return ( result.Pop().ToString());
         }
 //Функция для переводе данных в обратную польскую запись: https://ru.wikipedia.org/wiki/Алгоритм_сортировочной_станции
-        public Queue Parsing( IEnumerable<Token> stream)
+        public Queue Parsing(IEnumerable<Token> stream)
         {
+            Dictionary<char, int> precedence = initial();
             //Стек для операторов, функции и скобок
             Stack operators = new Stack();
             //Очередь для чисел а так же то что возращяется из метода
             Queue operands= new Queue();
             //Счетчик: не то что бы нужен если использовать цыкл for но особо без разницы
             int count = 0;
-            //Отсчитывает началокакого то числа для substring
-            int andstart = 0;
             //Счетчик цифр
             int nums = 0;
             //Для tryparse
             int temp;
             //Алгоритм для преврощения строки в очередь в обратную польскую запись
-            foreach (Token i in stream)
+            foreach (var i in stream)
             {
-                //Кейс оператор
-                if(!Int32.TryParse(i.ToString(),out temp))
-                {
-                    //работа со скобками
-                    if (i == '(')
+                //работа со скобками
+                    if (i.GetValue == "(")
                     {
-                        operators.Push(i);
+                        operators.Push(i.GetValue);
                     }
-                    else if (i == ')')
+                    else if (i.GetValue == ")")
                     {
-                        operands.Enqueue(Int32.Parse(prop.Data.Substring(andstart, count-andstart)));
                         while ((char)operators.Peek() != '(')
                         {
-                            if (operators.Count == 0)
-                            {
-                                prop.Data = "Fail, parenthesis mismatch";
-                                return new Queue();
-                            }
-
+//Error check here for extra parentheses
                             operands.Enqueue((char) operators.Pop());
                         }
-
                         operators.Pop();
-
-                        
                     }
-                    
-                    //Если оператор найден, то цыфры до него переводятся
-                    else if (precedence.ContainsKey(i))
+                    else if (i.GetTokenType=="Operator")
                     {
-                        if(andstart!=count)
-                            operands.Enqueue(Int32.Parse(prop.Data.Substring(andstart, count-andstart)));
                         //работа с оператором в стаке для операторов, разбор приоретета оператора
                         while (operators.Count != 0 && precedence.ContainsKey((char) operators.Peek()) &&
-                               (precedence[(char) operators.Peek()] > precedence[i] ||
-                                (precedence[(char) operators.Peek()] == precedence[i] && i != '^')))
+                               (precedence[(char) operators.Peek()] > precedence[i.GetValue] ||
+                                (precedence[(char) operators.Peek()] == precedence[i.GetValue] && i.GetValue != "pow")))
                         {
-                            
-
-
                             operands.Enqueue(operators.Pop());
                             
                         }
                         operators.Push(i);
                     }
+                    else if (i.GetTokenType == "Variable")
+                    {
+                        for (int l = 0; l < i.GetValue.Length; l++)
+                        {
+                            if (l > 2 &&)
+                            {
+                            }
+                            else
+                                operands.Enqueue((char)i.GetValue[l]);
+                        }
+                    }
+            }
 
 
-                    andstart = count;
-                    andstart++;
-                }
-
-                count++;
+                    count++;
                 //Console.WriteLine("end");
                 
             }
-            //Добавление последнего числа в очередь
-            if (count != prop.Data.Length)
-            {
-                operands.Enqueue(Int32.Parse(prop.Data.Substring(andstart, prop.Data.Length - andstart)));
-            }
-
             //Любые оставшиеся операторы добавляются в конец очереди
             while (operators.Count != 0)
             {
@@ -177,8 +164,7 @@ namespace AdvancedClac
             }
             /*Console.WriteLine(operands.Count);
             while(operands.Count!=0)
-                Console.WriteLine(opera
-            nds.Dequeue());
+                Console.WriteLine(operands.Dequeue());
 /
             return(operands);
             
@@ -188,4 +174,3 @@ namespace AdvancedClac
     }
 }
 
-*/
