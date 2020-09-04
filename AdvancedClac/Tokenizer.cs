@@ -33,48 +33,84 @@ namespace AdvancedClac
             string concatedStr = "";
             string concatedNumStr = "";
             bool flag = false;
+            
             for (var i = 0; i < expression.Length; i++)
             {
-                if (Regex.IsMatch(expression[i].ToString(), allowedNumber, RegexOptions.IgnoreCase))
+                try
                 {
-                    for (int j = i; j < expression.Length; j++)
+                    //Проверка, является ли текущий элемент числом
+                    if (Regex.IsMatch(expression[i].ToString(), allowedNumber, RegexOptions.IgnoreCase))
                     {
-                        if (Regex.IsMatch(expression[j].ToString(), allowedNumber, RegexOptions.IgnoreCase)
-                        && flag == false)
+                        // Если является, то создается цикл от начала индекса до конца выражения (или пока каждый новый элемент
+                        // является числом)
+                        for (int j = i; j < expression.Length; j++)
                         {
-                            concatedNumStr = String.Concat(concatedNumStr, expression[j]);
-                        }
-                        else
-                        {
-                            break;
+                            if (Regex.IsMatch(expression[j].ToString(), allowedNumber, RegexOptions.IgnoreCase)
+                                && flag == false)
+                            {
+                                //Если элемент - это число и флаг = false (то есть это число еще не "проверяли") оно добавляется
+                                // в стринг, который затем возвратится
+                                // Флаг сделан для того, что бы число 45 не токенезировалось как 45, а затем еще 5
+                                concatedNumStr = String.Concat(concatedNumStr, expression[j]);
+                            }
+                            // Если не число, цикл ломается
+                            else
+                            {
+                                break;
+                            }
                         }
                     }
-                }
-                if (concatedNumStr.Length >= 1)
-                {
-                    tokens.Add(new Token(concatedNumStr,"Numbers"));
-                    concatedNumStr = "";
-                    flag = true;
-                } 
-                
-                else if (Regex.IsMatch(expression[i].ToString(), allowedCharacter, RegexOptions.IgnoreCase))
-                {
-                    flag = false;
-                    concatedStr = String.Concat(concatedStr, expression[i].ToString());
+                    //Проверка числового стринга, если в нем что то есть, он токенезируется и флаг отмечается, что текущие цифры
+                    //были проверенны
+                    if (concatedNumStr.Length >= 1)
+                    {
+                        tokens.Add(new Token(concatedNumStr,"Numbers"));
+                        //Стринг сбрасывается
+                        concatedNumStr = "";
+                        flag = true;
+                    } 
+                    //Проверка на буквенные неизвестные и функции (sin, cos, pow)
+                    else if (Regex.IsMatch(expression[i].ToString(), allowedCharacter, RegexOptions.IgnoreCase))
+                    {
+                        //сброс флага, указывает на то, что псоле буквы будут встречаться новые числа
+                        flag = false;
+                        //Добавление буквы в стринг
+                        concatedStr = String.Concat(concatedStr, expression[i].ToString());
                     
-                }
-                else if (Regex.IsMatch(expression[i].ToString(), allowedSymbols, RegexOptions.IgnoreCase))
-                {
-                    flag = false;
-                    if (concatedStr.Length >= 1)
-                    {
-                        tokens.Add(new Token(concatedStr,"Variables"));
-                        concatedStr = "";
+                        //Если вдруг наше уравнение состит только из букв
+                        if (i == expression.Length-1)
+                        {
+                            tokens.Add(new Token(concatedStr,"Variables"));
+                            concatedStr = "";
+                        }
                     }
-                    tokens.Add(new Token(expression[i].ToString(), "Operator"));
+                
+                    //Проверка на наличие операторов
+                    else if (Regex.IsMatch(expression[i].ToString(), allowedSymbols, RegexOptions.IgnoreCase))
+                    {
+                        //Аналогичные действия с флагом
+                        flag = false;
+                        //Если буквенный стринг не пуст, он токенезируется
+                        if (concatedStr.Length >= 1)
+                        {
+                            tokens.Add(new Token(concatedStr,"Variables"));
+                            concatedStr = "";
+                        }
+                        tokens.Add(new Token(expression[i].ToString(), "Operator"));
+                    }
+                    else
+                    {
+                        throw new Exception("Unknown symbol while tokenizing"); 
+                    }
                 }
                 
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Ошибка: {e.Message}");
+                }
             }
+            
+            //возвращается лист содержащий все токены
             return tokens;
         }
     }
