@@ -24,7 +24,8 @@ namespace AdvancedClac
             
             catch (Exception e)
             {
-                Console.WriteLine($"Ошибка: {e.Message}");
+                Console.WriteLine($"Error: {e.Message}");
+                
             }
             
             const string allowedSymbols = @"[- + * / | & ^ ~ ( ) , ]";
