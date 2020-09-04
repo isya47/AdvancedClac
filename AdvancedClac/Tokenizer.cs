@@ -13,7 +13,20 @@ namespace AdvancedClac
         static List<Token> tokens = new List<Token>();
         public IEnumerable<Token> Scan(string expression)
         {
-            expression = expression.Trim();
+            try
+            {
+                expression = expression.Trim();
+                if (expression.Length == 0)
+                {
+                    throw new Exception("Empty String");
+                }
+            }
+            
+            catch (Exception e)
+            {
+                Console.WriteLine($"Ошибка: {e.Message}");
+            }
+            
             const string allowedSymbols = @"[- + * / | & ^ ~ ( ) , ]";
             const string allowedCharacter = @"[a-z]";
             const string allowedNumber = @"[0-9]";
