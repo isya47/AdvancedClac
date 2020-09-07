@@ -1,5 +1,3 @@
-
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -8,16 +6,16 @@ using System.Reflection.Emit;
 //переформатировать в токены
 //Сделать умножение для переменных по умолчанию 
 namespace AdvancedClac
-{
+{    public class Node
+    {
+        public readonly string type;
+        public readonly string value;
+        public unsafe void* parent;
+        public unsafe void* left;
+        public unsafe void* right;
+    }
     public class MathFunc
     {
-        private string type;
-
-        private string value;
-
-        public int newvalue;
-        
-        
         //Метод инициализации данных операторов. Это нужно для более простых вычислении о порядке оператаров.
         private Dictionary<string, int> initial()
         {
@@ -37,25 +35,26 @@ namespace AdvancedClac
         }
         */
       
-        internal int Exec(int num2, int result, char operator1){
-
-            
+        internal T Exec<T>(T a, T b, string operator1)
+        {
+            dynamic num2 = a;
+            dynamic result = b;
             switch (operator1)
             {
                 
-                case '/':
+                case "/":
                     result = result / num2;
                     break;
-                case '*':
+                case "*":
                     result = result * num2;
                     break;
-                case '+':
+                case "+":
                     result = result + num2;
                     break;
-                case '-':
+                case "-":
                     result = result - num2;
                     break;
-                case '^':
+                case "^":
                     int temp = result;
                     for (int i = 1; i < num2; i++)
                     {
@@ -64,6 +63,8 @@ namespace AdvancedClac
 
                     }
                     break;
+                case "sin":
+                    
             }
 
             return result;
@@ -106,12 +107,6 @@ namespace AdvancedClac
             Stack operators = new Stack();
             //Очередь для чисел а так же то что возращяется из метода
             Queue operands= new Queue();
-            //Счетчик: не то что бы нужен если использовать цыкл for но особо без разницы
-            int count = 0;
-            //Счетчик цифр
-            int nums = 0;
-            //Для tryparse
-            int temp;
             //Алгоритм для преврощения строки в очередь в обратную польскую запись
             foreach (var i in stream)
             {
@@ -149,31 +144,28 @@ namespace AdvancedClac
                         {
                             if (l+2 <i.GetValue.Length&&precedence.ContainsKey(i.GetValue.Substring(l,3)))
                             {
+                                operators.Push(i.GetValue.Substring(l,3));
                             }
                             else
-                                operands.Enqueue((char)i.GetValue[l]);
+                                operands.Enqueue(i.GetValue[l]);
                         }
                     }
+                    else if (i.GetTokenType == "Numbers")
+                    {
+                        if (i.GetValue.Contains('.'))
+                        {
+                            operands.Enqueue(double.Parse(i.GetValue));
+                        }
+                        else
+                            operands.Enqueue(long.Parse(i.GetValue));
+                    }
             }
-
-
-                    count++;
-                //Console.WriteLine("end");
-                
-            
             //Любые оставшиеся операторы добавляются в конец очереди
             while (operators.Count != 0)
             {
-                operands.Enqueue((char) operators.Pop());
+                operands.Enqueue((string)operators.Pop());
             }
-            /*Console.WriteLine(operands.Count);
-            while(operands.Count!=0)
-                Console.WriteLine(operands.Dequeue());
-/*/
             return(operands);
-    
-            
-            
         }
     }
 }
