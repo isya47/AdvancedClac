@@ -21,7 +21,7 @@ namespace AdvancedClac
         //Метод инициализации данных операторов. Это нужно для более простых вычислении о порядке оператаров.
         private Dictionary<string, int> initial()
         {
-            return(new Dictionary<string, int> {{"pow",4},{"sin"},{"cos"},{"tan,3"},{"*",3},{"/",3},{"+",2},{"-",2}});
+            return(new Dictionary<string, int> {{"pow",4},{"sin",0},{"cos",0},{"tan",0},{"*",3},{"/",3},{"+",2},{"-",2}});
         }
         /*
         private enum precedence : ushort
@@ -71,20 +71,22 @@ namespace AdvancedClac
 //Функция исполняющая переведённое выражение 
         public string Eval(Queue operands)
         {
+            Dictionary<string, int> precedence = initial();
             Stack result=new Stack();
+            int temp;
             if (operands.Count == 0)
                 return ("NULL");
-            do
+            while (operands.Count != 0)
             {
-                if (result.Count == 1 && (operands.Peek() == (object) '-') && (operands.Peek() == (object) '+'))
+                if (result.Count == 1 && (operands.Peek() == (object) '-'||operands.Peek() == (object) '+'))
                     result.Push(Exec(0, (int) result.Pop(), (char) operands.Dequeue()));
-                else if (!(operands.Peek() is int))
-                {
-                    result.Push(Exec((int) result.Pop(), (int) result.Pop(), (char) operands.Dequeue()));
-                }
                 else if (operands.Peek() is int)
                 {
                     result.Push(operands.Dequeue());
+                }
+                else if (!(operands.Peek() is int))
+                {
+                    result.Push(Exec((int) result.Pop(), (int) result.Pop(), (char) operands.Dequeue()));
                 }
                 else
                 {
@@ -92,14 +94,14 @@ namespace AdvancedClac
                 }
 
 
-            } while (operands.Count != 0);
+            }
 
             return ( result.Pop().ToString());
         }
 //Функция для переводе данных в обратную польскую запись: https://ru.wikipedia.org/wiki/Алгоритм_сортировочной_станции
         public Queue Parsing(IEnumerable<Token> stream)
         {
-            Dictionary<char, int> precedence = initial();
+            Dictionary<string, int> precedence = initial();
             //Стек для операторов, функции и скобок
             Stack operators = new Stack();
             //Очередь для чисел а так же то что возращяется из метода
@@ -126,13 +128,15 @@ namespace AdvancedClac
                             operands.Enqueue((char) operators.Pop());
                         }
                         operators.Pop();
+                        if(precedence[(string)operators.Peek()]==0)
+                            operands.Enqueue(operators.Pop());
                     }
                     else if (i.GetTokenType=="Operator")
                     {
                         //работа с оператором в стаке для операторов, разбор приоретета оператора
-                        while (operators.Count != 0 && precedence.ContainsKey((char) operators.Peek()) &&
-                               (precedence[(char) operators.Peek()] > precedence[i.GetValue] ||
-                                (precedence[(char) operators.Peek()] == precedence[i.GetValue] && i.GetValue != "pow")))
+                        while (operators.Count != 0 && precedence.ContainsKey((string)operators.Peek()) &&
+                               (precedence[(string)operators.Peek()] > precedence[i.GetValue] ||
+                                (precedence[(string) operators.Peek()] == precedence[i.GetValue] && i.GetValue != "pow")))
                         {
                             operands.Enqueue(operators.Pop());
                             
@@ -143,7 +147,7 @@ namespace AdvancedClac
                     {
                         for (int l = 0; l < i.GetValue.Length; l++)
                         {
-                            if (l > 2 &&)
+                            if (l+2 <i.GetValue.Length&&precedence.ContainsKey(i.GetValue.Substring(l,3)))
                             {
                             }
                             else
@@ -156,7 +160,7 @@ namespace AdvancedClac
                     count++;
                 //Console.WriteLine("end");
                 
-            }
+            
             //Любые оставшиеся операторы добавляются в конец очереди
             while (operators.Count != 0)
             {
@@ -165,9 +169,9 @@ namespace AdvancedClac
             /*Console.WriteLine(operands.Count);
             while(operands.Count!=0)
                 Console.WriteLine(operands.Dequeue());
-/
+/*/
             return(operands);
-            
+    
             
             
         }
