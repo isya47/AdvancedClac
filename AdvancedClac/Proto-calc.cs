@@ -90,9 +90,13 @@ namespace AdvancedClac
                 {
                     result.Push(operands.Dequeue());
                 }
-                else if (!(operands.Peek() is long||operands.Peek() is double))
+                else if (precedence[(string)operands.Peek()]>0)
                 {
                     result.Push(Antiunitary(result.Pop(), result.Pop(), (string) operands.Dequeue()));
+                }
+                else if (!(precedence[(string)operands.Peek()]>0))
+                {
+                    result.Push(Unitary(result.Pop(),(string)operands.Dequeue()));
                 }
                 else
                 {
