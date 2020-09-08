@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection.Emit;
 
 //переформатировать в токены
@@ -16,6 +18,7 @@ namespace AdvancedClac
     }
     public class MathFunc
     {
+        private Dictionary<string,string> variables=new Dictionary<string, string>();
         //Метод инициализации данных операторов. Это нужно для более простых вычислении о порядке оператаров.
         private Dictionary<string, int> initial()
         {
@@ -34,27 +37,36 @@ namespace AdvancedClac
             tan=4,
         }
         */
-      
-        internal T Exec<T>(T a, T b, string operator1)
+
+        internal double Unitary<T>(T a, string operator1)
+        {
+            double num1 = double.Parse(a);
+            switch (operator1)
+            {
+                case "sin":
+                    return Math.Sin(num1);
+                case "cos":
+                    return Math.Cos(num1);
+                case "tan":
+                    return Math.Tan(num1);
+            }
+        }
+        
+        internal T Antiunitary<T>(T a, T b, string operator1)
         {
             dynamic num2 = a;
             dynamic result = b;
             switch (operator1)
             {
-                
                 case "/":
-                    result = result / num2;
-                    break;
+                    return result / num2;
                 case "*":
-                    result = result * num2;
-                    break;
+                    return result * num2;
                 case "+":
-                    result = result + num2;
-                    break;
+                    return result + num2;
                 case "-":
-                    result = result - num2;
-                    break;
-                case "^":
+                    return result - num2;
+                case "pow":
                     int temp = result;
                     for (int i = 1; i < num2; i++)
                     {
@@ -62,32 +74,25 @@ namespace AdvancedClac
                         result *= temp;
 
                     }
-                    break;
-                case "sin":
-                    
+                    return result;
             }
-
-            return result;
-            }
+        }
 //Функция исполняющая переведённое выражение 
         public string Eval(Queue operands)
         {
             Dictionary<string, int> precedence = initial();
             Stack result=new Stack();
-            int temp;
             if (operands.Count == 0)
                 return ("NULL");
             while (operands.Count != 0)
             {
-                if (result.Count == 1 && (operands.Peek() == (object) '-'||operands.Peek() == (object) '+'))
-                    result.Push(Exec(0, (int) result.Pop(), (char) operands.Dequeue()));
-                else if (operands.Peek() is int)
+                if (operands.Peek() is long||operands.Peek() is double)
                 {
                     result.Push(operands.Dequeue());
                 }
-                else if (!(operands.Peek() is int))
+                else if (!(operands.Peek() is long||operands.Peek() is double))
                 {
-                    result.Push(Exec((int) result.Pop(), (int) result.Pop(), (char) operands.Dequeue()));
+                    result.Push(Antiunitary(result.Pop(), result.Pop(), (string) operands.Dequeue()));
                 }
                 else
                 {
@@ -115,7 +120,7 @@ namespace AdvancedClac
                     {
                         operators.Push(i.GetValue);
                     }
-                    else if (i.GetValue == ")")
+                    else if (i.GetValue == ")"||i.GetValue==",")
                     {
                         while ((char)operators.Peek() != '(')
                         {
@@ -125,6 +130,8 @@ namespace AdvancedClac
                         operators.Pop();
                         if(precedence[(string)operators.Peek()]==0)
                             operands.Enqueue(operators.Pop());
+                        if(i.GetValue==",")
+                            operators.Push("(");
                     }
                     else if (i.GetTokenType=="Operator")
                     {
@@ -145,9 +152,13 @@ namespace AdvancedClac
                             if (l+2 <i.GetValue.Length&&precedence.ContainsKey(i.GetValue.Substring(l,3)))
                             {
                                 operators.Push(i.GetValue.Substring(l,3));
+ 
                             }
                             else
+                            {
                                 operands.Enqueue(i.GetValue[l]);
+                                variables.Add(i.GetValue,"Null");
+                            }
                         }
                     }
                     else if (i.GetTokenType == "Numbers")
