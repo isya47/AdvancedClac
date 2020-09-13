@@ -1,26 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection.Emit;
 
-//переформатировать в токены
+//Перегрузить операции для всех типов чисел
 //Сделать умножение для переменных по умолчанию 
 namespace AdvancedClac
-{    public class Node
+{    /*public class Node
     {
         public readonly string type;
         public readonly string value;
         public unsafe void* parent;
         public unsafe void* left;
         public unsafe void* right;
-    }
+    }*/
     public class MathFunc
     {
-        private Dictionary<string,string> variables=new Dictionary<string, string>();
+        private static Dictionary<char,string> variables=new Dictionary<char, string>();
         //Метод инициализации данных операторов. Это нужно для более простых вычислении о порядке оператаров.
-        private Dictionary<string, int> initial()
+        private static Dictionary<string, int> initial()
         {
             return(new Dictionary<string, int> {{"pow",4},{"sin",0},{"cos",0},{"tan",0},{"*",3},{"/",3},{"+",2},{"-",2}});
         }
@@ -38,7 +35,7 @@ namespace AdvancedClac
         }
         */
 
-        internal double Unitary(double num1, string operator1)
+        internal static double Unitary(double num1, string operator1)
         {
             //double num1 = double.Parse(a);
             switch (operator1)
@@ -54,7 +51,7 @@ namespace AdvancedClac
             return 0;
         }
         
-        internal T Antiunitary<T>(T a, T b, string operator1)
+        internal static T Antiunitary<T>(T a, T b, string operator1)
         {
             dynamic num2 = a;
             dynamic result = b;
@@ -82,7 +79,7 @@ namespace AdvancedClac
             return a;
         }
 //Функция исполняющая переведённое выражение 
-        public string Eval(Queue operands)
+        public static string Eval(Queue operands)
         {
             Dictionary<string, int> precedence = initial();
             Stack result=new Stack();
@@ -90,7 +87,20 @@ namespace AdvancedClac
                 return ("NULL");
             while (operands.Count != 0)
             {
-                if (operands.Peek() is long||operands.Peek() is double)
+                Console.WriteLine(operands.Peek());
+                if (operands.Peek() is char && variables[(char)operands.Peek()] == "Null")
+                {
+                    Console.WriteLine("Enter value for '{0}'", operands.Peek());
+                    variables[(char) operands.Peek()] = Console.ReadLine();
+                    result.Push(double.Parse(variables[(char) operands.Dequeue()]));
+                    Console.WriteLine(result.Peek());
+                }
+                else if (operands.Peek() is char && variables[(char) operands.Peek()] != "Null")
+                {
+                    result.Push(double.Parse(variables[(char) operands.Dequeue()]));
+                }
+
+                else if (operands.Peek() is long||operands.Peek() is double)
                 {
                     result.Push(operands.Dequeue());
                 }
@@ -107,13 +117,13 @@ namespace AdvancedClac
                     return ("Syntax error");
                 }
 
-
+                
             }
 
             return ( result.Pop().ToString());
         }
 //Функция для переводе данных в обратную польскую запись: https://ru.wikipedia.org/wiki/Алгоритм_сортировочной_станции
-        public Queue Parsing(IEnumerable<Token> stream)
+        public static Queue Parsing(IEnumerable<Token> stream)
         {
             Dictionary<string, int> precedence = initial();
             //Стек для операторов, функции и скобок
@@ -124,6 +134,8 @@ namespace AdvancedClac
             foreach (var i in stream)
             {
                 //работа со скобками
+                
+                //Console.WriteLine(i.GetValue);
                     if (i.GetValue == "(")
                     {
                         operators.Push(i.GetValue);
@@ -143,6 +155,8 @@ namespace AdvancedClac
                     }
                     else if (i.GetTokenType=="Operator")
                     {
+                        //Console.WriteLine(i.GetValue);
+                       // Console.WriteLine(operators.Count);
                         //работа с оператором в стаке для операторов, разбор приоретета оператора
                         while (operators.Count != 0 && precedence.ContainsKey((string)operators.Peek()) &&
                                (precedence[(string)operators.Peek()] > precedence[i.GetValue] ||
@@ -151,10 +165,11 @@ namespace AdvancedClac
                             operands.Enqueue(operators.Pop());
                             
                         }
-                        operators.Push(i);
+                        operators.Push(i.GetValue);
                     }
-                    else if (i.GetTokenType == "Variable")
+                    else if (i.GetTokenType == "Variables")
                     {
+                        Console.WriteLine(i.GetTokenType);
                         for (int l = 0; l < i.GetValue.Length; l++)
                         {
                             if (l+2 <i.GetValue.Length&&precedence.ContainsKey(i.GetValue.Substring(l,3)))
@@ -164,8 +179,8 @@ namespace AdvancedClac
                             }
                             else
                             {
-                                operands.Enqueue(i.GetValue[l]);
-                                variables.Add(i.GetValue,"Null");
+                                operands.Enqueue((char)i.GetValue[l]);
+                                variables.Add((char)i.GetValue[l],"Null");
                             }
                         }
                     }
@@ -178,12 +193,21 @@ namespace AdvancedClac
                         else
                             operands.Enqueue(long.Parse(i.GetValue));
                     }
+                  //  if(operators.Count!=0)
+                   // Console.WriteLine(operators.Peek());
             }
             //Любые оставшиеся операторы добавляются в конец очереди
             while (operators.Count != 0)
             {
                 operands.Enqueue((string)operators.Pop());
             }
+
+          /*  while (operands.Count != 0)
+            {
+                Console.Write(operands.Dequeue());
+            }
+
+            Console.WriteLine("end");*/
             return(operands);
         }
     }
