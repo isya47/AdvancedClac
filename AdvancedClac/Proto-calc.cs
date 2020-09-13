@@ -38,9 +38,9 @@ namespace AdvancedClac
         }
         */
 
-        internal double Unitary<T>(T a, string operator1)
+        internal double Unitary(double num1, string operator1)
         {
-            double num1 = double.Parse(a);
+            //double num1 = double.Parse(a);
             switch (operator1)
             {
                 case "sin":
@@ -50,6 +50,8 @@ namespace AdvancedClac
                 case "tan":
                     return Math.Tan(num1);
             }
+
+            return 0;
         }
         
         internal T Antiunitary<T>(T a, T b, string operator1)
@@ -76,6 +78,8 @@ namespace AdvancedClac
                     }
                     return result;
             }
+
+            return a;
         }
 //Функция исполняющая переведённое выражение 
         public string Eval(Queue operands)
@@ -96,7 +100,7 @@ namespace AdvancedClac
                 }
                 else if (!(precedence[(string)operands.Peek()]>0))
                 {
-                    result.Push(Unitary(result.Pop(),(string)operands.Dequeue()));
+                    result.Push(Unitary((double)result.Pop(),(string)operands.Dequeue()));
                 }
                 else
                 {
