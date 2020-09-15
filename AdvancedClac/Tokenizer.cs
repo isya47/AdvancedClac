@@ -8,26 +8,38 @@ using System.Linq;
 
 namespace AdvancedClac
 {
+    
+    public enum TokenTypeEnum
+    {
+        Variables,
+        Numbers,
+        Operators
+    }
     public class Tokenizer
     {
         static List<Token> tokens = new List<Token>();
+        public static string RemoveWhitespace(string input)
+        {
+            return new string(input.ToCharArray()
+                .Where(c => !Char.IsWhiteSpace(c))
+                .ToArray());
+        }
+        
         public IEnumerable<Token> Scan(string expression)
         {
             try
             {
-                expression = Regex.Replace(expression, @"\s+", "");
+                //expression = Regex.Replace(expression, @"\s+", "");
+                expression = RemoveWhitespace(expression);
                 if (expression.Length == 0)
                 {
                     throw new Exception("Empty String");
                 }
             }
-            
             catch (Exception e)
             {
                 Console.WriteLine($"Error: {e.Message}");
-                
             }
-            
             const string allowedSymbols = @"[- + * / | & ^ ~ ( ) ,]";
             const string allowedCharacter = @"[a-z]";
             const string allowedNumber = @"[0-9]";
@@ -66,7 +78,7 @@ namespace AdvancedClac
                     //были проверенны
                     if (concatedNumStr.Length >= 1)
                     {
-                        tokens.Add(new Token(concatedNumStr, "Numbers"));
+                        tokens.Add(new Token(concatedNumStr, TokenTypeEnum.Numbers));
                         //Стринг сбрасывается
                         concatedNumStr = "";
                         flag = true;
@@ -82,7 +94,7 @@ namespace AdvancedClac
                         //Если вдруг наше уравнение состит только из букв
                         if (i == expression.Length - 1)
                         {
-                            tokens.Add(new Token(concatedStr, "Variables"));
+                            tokens.Add(new Token(concatedStr, TokenTypeEnum.Variables));
                             concatedStr = "";
                         }
                     }
@@ -95,14 +107,12 @@ namespace AdvancedClac
                         //Если буквенный стринг не пуст, он токенезируется
                         if (concatedStr.Length >= 1)
                         {
-                            tokens.Add(new Token(concatedStr, "Variables"));
+                            tokens.Add(new Token(concatedStr, TokenTypeEnum.Variables ));
                             concatedStr = "";
                         }
 
-                        tokens.Add(new Token(expression[i].ToString(), "Operator"));
+                        tokens.Add(new Token(expression[i].ToString(), TokenTypeEnum.Operators));
                     }
-
-
                     else if (Regex.IsMatch(expression[i].ToString(), allowedNumber, RegexOptions.IgnoreCase))
                     {
                         continue;
