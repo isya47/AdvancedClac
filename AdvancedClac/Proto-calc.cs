@@ -66,7 +66,7 @@ namespace AdvancedClac
                 case "-":
                     return result - num2;
                 case "pow":
-                    int temp = result;
+                    long temp = result;
                     for (int i = 1; i < num2; i++)
                     {
                         //не знаю есть смысл или нет но тут можно сделать goto к кейсам 1 и 2
@@ -110,7 +110,7 @@ namespace AdvancedClac
                 }
                 else if (!(precedence[(string)operands.Peek()]>0))
                 {
-                    result.Push(Unitary((double)result.Pop(),(string)operands.Dequeue()));
+                    result.Push(Unitary(Double.Parse(result.Pop().ToString()),(string)operands.Dequeue()));
                 }
                 else
                 {
@@ -123,8 +123,10 @@ namespace AdvancedClac
             return ( result.Pop().ToString());
         }
 //Функция для переводе данных в обратную польскую запись: https://ru.wikipedia.org/wiki/Алгоритм_сортировочной_станции
+        //https://en.wikipedia.org/wiki/Shunting-yard_algorithm
         public static Queue Parsing(IEnumerable<Token> stream)
         {
+            bool valueflag = false;
             Dictionary<string, int> precedence = initial();
             //Стек для операторов, функции и скобок
             Stack operators = new Stack();
@@ -142,40 +144,30 @@ namespace AdvancedClac
                     }
                     else if (i.GetValue == ")"||i.GetValue==",")
                     {
-                        while ((char)operators.Peek() != '(')
+                        while ((string)operators.Peek() != "(")
                         {
 //Error check here for extra parentheses
-                            operands.Enqueue((char) operators.Pop());
+                            operands.Enqueue( operators.Pop());
                         }
                         operators.Pop();
+                        
                         if(precedence[(string)operators.Peek()]==0)
                             operands.Enqueue(operators.Pop());
                         if(i.GetValue==",")
                             operators.Push("(");
-                    }
-                    else if (i.GetTokenType=="Operator")
-                    {
-                        //Console.WriteLine(i.GetValue);
-                       // Console.WriteLine(operators.Count);
-                        //работа с оператором в стаке для операторов, разбор приоретета оператора
-                        while (operators.Count != 0 && precedence.ContainsKey((string)operators.Peek()) &&
-                               (precedence[(string)operators.Peek()] > precedence[i.GetValue] ||
-                                (precedence[(string) operators.Peek()] == precedence[i.GetValue] && i.GetValue != "pow")))
-                        {
-                            operands.Enqueue(operators.Pop());
                             
-                        }
-                        operators.Push(i.GetValue);
                     }
+
                     else if (i.GetTokenType == "Variables")
                     {
-                        Console.WriteLine(i.GetTokenType);
+                        valueflag = true;
+                        //Console.WriteLine(i.GetTokenType);
                         for (int l = 0; l < i.GetValue.Length; l++)
                         {
                             if (l+2 <i.GetValue.Length&&precedence.ContainsKey(i.GetValue.Substring(l,3)))
                             {
                                 operators.Push(i.GetValue.Substring(l,3));
- 
+                                l += 2;
                             }
                             else
                             {
@@ -186,12 +178,34 @@ namespace AdvancedClac
                     }
                     else if (i.GetTokenType == "Numbers")
                     {
+                        valueflag = true;
                         if (i.GetValue.Contains('.'))
                         {
                             operands.Enqueue(double.Parse(i.GetValue));
                         }
                         else
                             operands.Enqueue(long.Parse(i.GetValue));
+                    }
+                   else if (i.GetTokenType=="Operator"||(valueflag==true&&i.GetTokenType=="Variables")){
+                    /*
+                        switch(valueflag)
+                        case true:
+                        string temp = "*";
+                        default:
+                        */
+                    string temp = i.GetValue;
+                            //Console.WriteLine(i.GetValue);
+                        // Console.WriteLine(operators.Count);
+                        
+                        //работа с оператором в стаке для операторов, разбор приоретета оператора
+                        while (operators.Count != 0 && precedence.ContainsKey((string)operators.Peek()) &&
+                               (precedence[(string)operators.Peek()] > precedence[temp] ||
+                                (precedence[(string) operators.Peek()] == precedence[temp] && temp != "pow")))
+                        {
+                            operands.Enqueue(operators.Pop());
+                            
+                        }
+                        operators.Push(temp);
                     }
                   //  if(operators.Count!=0)
                    // Console.WriteLine(operators.Peek());
@@ -201,13 +215,14 @@ namespace AdvancedClac
             {
                 operands.Enqueue((string)operators.Pop());
             }
-
-          /*  while (operands.Count != 0)
+/*
+            while (operands.Count != 0)
             {
                 Console.Write(operands.Dequeue());
             }
 
-            Console.WriteLine("end");*/
+            Console.WriteLine("end");
+         */   
             return(operands);
         }
     }
