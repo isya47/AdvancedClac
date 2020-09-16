@@ -4,9 +4,11 @@ namespace AdvancedClac
 {
     public class Token
     {
-        private  string _value;
-        private readonly string _tokenType;
-        public Token(string value, string tokenType)
+        private string _value;
+        private TokenTypeEnum _tokenType;
+        
+
+        public Token(string value, TokenTypeEnum tokenType)
         {
             try
             {
@@ -38,7 +40,7 @@ namespace AdvancedClac
             
         }
 
-        public string GetTokenType
+        public Enum GetTokenType
         { 
             get { return _tokenType; }
         }
