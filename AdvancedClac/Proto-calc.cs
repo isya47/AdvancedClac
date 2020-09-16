@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using static AdvancedClac.TokenTypeEnum;
 
 //Перегрузить операции для всех типов чисел
 //Сделать умножение для переменных по умолчанию 
@@ -78,6 +79,7 @@ namespace AdvancedClac
 
             return a;
         }
+        
 //Функция исполняющая переведённое выражение 
         public static string Eval(Queue operands)
         {
@@ -87,7 +89,7 @@ namespace AdvancedClac
                 return ("NULL");
             while (operands.Count != 0)
             {
-                Console.WriteLine(operands.Peek());
+                //Console.WriteLine(operands.Peek());
                 if (operands.Peek() is char && variables[(char)operands.Peek()] == "Null")
                 {
                     Console.WriteLine("Enter value for '{0}'", operands.Peek());
@@ -137,7 +139,7 @@ namespace AdvancedClac
             {
                 //работа со скобками
                 
-                //Console.WriteLine(i.GetValue);
+                Console.WriteLine(i.GetValue);
                     if (i.GetValue == "(")
                     {
                         operators.Push(i.GetValue);
@@ -158,7 +160,7 @@ namespace AdvancedClac
                             
                     }
 
-                    else if (i.GetTokenType == "Variables")
+                    else if (i.GetTokenType == (Enum) Variables)
                     {
                         valueflag = true;
                         //Console.WriteLine(i.GetTokenType);
@@ -176,7 +178,7 @@ namespace AdvancedClac
                             }
                         }
                     }
-                    else if (i.GetTokenType == "Numbers")
+                    else if (i.GetTokenType == (Enum)Numbers)
                     {
                         valueflag = true;
                         if (i.GetValue.Contains('.'))
@@ -186,7 +188,7 @@ namespace AdvancedClac
                         else
                             operands.Enqueue(long.Parse(i.GetValue));
                     }
-                   else if (i.GetTokenType=="Operator"||(valueflag==true&&i.GetTokenType=="Variables")){
+                   else if (i.GetTokenType==(Enum) Operators||(valueflag==true&&i.GetTokenType==(Enum)Variables)){
                     /*
                         switch(valueflag)
                         case true:
