@@ -162,7 +162,6 @@ namespace AdvancedClac
 
                     else if (i.GetTokenType == (Enum) Variables)
                     {
-                        
                         valueflag = true;
                         //Console.WriteLine(i.GetTokenType);
                         for (int l = 0; l < i.GetValue.Length; l++)
