@@ -139,12 +139,12 @@ namespace AdvancedClac
             {
                 //работа со скобками
                 
-                Console.WriteLine(i.GetValue);
-                    if (i.GetValue == "(")
+                Console.WriteLine(i.Value);
+                    if (i.Value == "(")
                     {
-                        operators.Push(i.GetValue);
+                        operators.Push(i.Value);
                     }
-                    else if (i.GetValue == ")"||i.GetValue==",")
+                    else if (i.Value == ")"||i.Value==",")
                     {
                         while ((string)operators.Peek() != "(")
                         {
@@ -155,47 +155,47 @@ namespace AdvancedClac
                         
                         if(precedence[(string)operators.Peek()]==0)
                             operands.Enqueue(operators.Pop());
-                        if(i.GetValue==",")
+                        if(i.Value==",")
                             operators.Push("(");
                             
                     }
 
-                    else if (i.GetTokenType == (Enum) Variables)
+                    else if (i.TokenType == (TokenTypeEnum) Variables)
                     {
                         valueflag = true;
                         //Console.WriteLine(i.GetTokenType);
-                        for (int l = 0; l < i.GetValue.Length; l++)
+                        for (int l = 0; l < i.Value.Length; l++)
                         {
-                            if (l+2 <i.GetValue.Length&&precedence.ContainsKey(i.GetValue.Substring(l,3)))
+                            if (l+2 <i.Value.Length&&precedence.ContainsKey(i.Value.Substring(l,3)))
                             {
-                                operators.Push(i.GetValue.Substring(l,3));
+                                operators.Push(i.Value.Substring(l,3));
                                 l += 2;
                             }
                             else
                             {
-                                operands.Enqueue((char)i.GetValue[l]);
-                                variables.Add((char)i.GetValue[l],"Null");
+                                operands.Enqueue((char)i.Value[l]);
+                                variables.Add((char)i.Value[l],"Null");
                             }
                         }
                     }
-                    else if (i.GetTokenType == (Enum)Numbers)
+                    else if (i.TokenType == Numbers)
                     {
                         valueflag = true;
-                        if (i.GetValue.Contains('.'))
+                        if (i.Value.Contains('.'))
                         {
-                            operands.Enqueue(double.Parse(i.GetValue));
+                            operands.Enqueue(double.Parse(i.Value));
                         }
                         else
-                            operands.Enqueue(long.Parse(i.GetValue));
+                            operands.Enqueue(long.Parse(i.Value));
                     }
-                   else if (i.GetTokenType==(Enum) Operators||(valueflag==true&&i.GetTokenType==(Enum)Variables)){
+                   else if (i.TokenType==Operators||(valueflag==true&&i.TokenType==Variables)){
                     /*
                         switch(valueflag)
                         case true:
                         string temp = "*";
                         default:
                         */
-                    string temp = i.GetValue;
+                    string temp = i.Value;
                             //Console.WriteLine(i.GetValue);
                         // Console.WriteLine(operators.Count);
                         
