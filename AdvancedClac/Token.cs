@@ -7,7 +7,6 @@ namespace AdvancedClac
         private string _value;
         private TokenTypeEnum _tokenType;
         
-
         public Token(string value, TokenTypeEnum tokenType)
         {
             try
@@ -20,29 +19,38 @@ namespace AdvancedClac
                 Console.WriteLine(e);
             }
         }
-        
-        public string GetValue
-        {
-            get { return _value; }
-        }
 
-        public void SetValue(string newValue)
+        public TokenTypeEnum TokenType => _tokenType;
+
+        public string Value
         {
-            try
-            {
-                _value = newValue;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
+            get => _value;
+
+            set => _value = value;
+        }
+        //public string GetValue
+        //{
+         //   get { return _value; }
+        //}
+
+        //public void SetValue(string newValue)
+        //{
+        //    try
+         //   {
+        //        _value = newValue;
+        //    }
+        //    catch (Exception e)
+        //    {
+       //         Console.WriteLine(e);
                 
-            }
+            //}
             
-        }
+        //}
+        
 
-        public Enum GetTokenType
-        { 
-            get { return _tokenType; }
-        }
+       // public Enum GetTokenType
+       // { 
+        //    get { return _tokenType; }
+        //}
     }
 }
