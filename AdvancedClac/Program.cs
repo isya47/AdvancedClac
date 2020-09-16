@@ -9,8 +9,8 @@ namespace AdvancedClac
             Tokenizer TL = new Tokenizer();
             foreach (var ystem in TL.Scan("55 * x + 99 - 16/4"))
             {
-                Console.WriteLine(ystem.GetValue);
-                Console.WriteLine(ystem.GetTokenType);
+                Console.WriteLine(ystem.Value);
+                Console.WriteLine(ystem.TokenType);
             }
         }
     }
