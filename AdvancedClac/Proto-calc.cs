@@ -13,7 +13,7 @@ namespace AdvancedClac
         public unsafe void* parent;
         public unsafe void* left;
         public unsafe void* right;
-    }*/
+    }*/ 
     public class MathFunc
     {
         private static Dictionary<char,string> variables=new Dictionary<char, string>();
@@ -89,6 +89,11 @@ namespace AdvancedClac
                 return ("NULL");
             while (operands.Count != 0)
             {
+                if (result.Count == 0 && !(operands.Peek() is long || operands.Peek() is double))
+                {
+                    Console.WriteLine("Math error: missing operands or wrong order");
+                    return ("NULL");
+                }
                 //Console.WriteLine(operands.Peek());
                 if (operands.Peek() is char && variables[(char)operands.Peek()] == "Null")
                 {
@@ -134,6 +139,7 @@ namespace AdvancedClac
             Stack operators = new Stack();
             //Очередь для чисел а так же то что возращяется из метода
             Queue operands= new Queue();
+            bool operatorflag = true;
             //Алгоритм для преврощения строки в очередь в обратную польскую запись
             foreach (var i in stream)
             {
