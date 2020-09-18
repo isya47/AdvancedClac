@@ -42,7 +42,7 @@ namespace AdvancedClac
             }
             const string allowedSymbols = @"[- + * / | & ^ ~ ( ) ,]";
             const string allowedCharacter = @"[a-z]";
-            const string allowedNumber = @"[0-9]";
+            const string allowedNumber = @"[0-9 .]";
             string concatedStr = "";
             string concatedNumStr = "";
             bool flag = false;
