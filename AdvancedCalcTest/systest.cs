@@ -136,7 +136,67 @@ namespace TestProject1
         {
             try
             {
-                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("3.2-")));
+                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("3.2-2.1")));
+            }
+            catch (Exception ae)
+            {
+                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
+            }
+        }
+        [Test]
+        public void TestSubtraction2()
+        {
+            try
+            {
+                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("3.2-3")));
+            }
+            catch (Exception ae)
+            {
+                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
+            }
+        }
+        [Test]
+        public void TestMultiplication1()
+        {
+            try
+            {
+                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("3.2*3.4")));
+            }
+            catch (Exception ae)
+            {
+                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
+            }
+        }
+        [Test]
+        public void TestMultiplication2()
+        {
+            try
+            {
+                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("3.2*3")));
+            }
+            catch (Exception ae)
+            {
+                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
+            }
+        }
+        [Test]
+        public void TestDivision1()
+        {
+            try
+            {
+                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("4.4/3.2")));
+            }
+            catch (Exception ae)
+            {
+                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
+            }
+        }
+        [Test]
+        public void TestDivision2()
+        {
+            try
+            {
+                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("3/3.5")));
             }
             catch (Exception ae)
             {
