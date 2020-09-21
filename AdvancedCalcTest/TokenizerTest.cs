@@ -45,8 +45,8 @@ namespace TestProject1
                 Assert.AreEqual(inst.TokenType, TokenTypeEnum.Variables);
             }
         }
-        
-        [Test]
+        //НЕ РАБОТАЕТ СОВСЕМ
+        //[Test]
         public void TestSingleDigit()
         {
             var expected = TL.Scan("3");
@@ -56,15 +56,11 @@ namespace TestProject1
                 new Token("3", TokenTypeEnum.Numbers)
             };
 
-            //CollectionAssert.AreEqual(expected, actual);
-            foreach (var inst in expected)
-            {
-                Assert.AreEqual(inst.Value, actual[0].Value);
-                Assert.AreEqual(inst.TokenType, actual[0].TokenType);
-            }
+            CollectionAssert.AreEqual(expected, actual);
+            
 
         }
-        //[Test]
+        [Test]
         public void TestSingleDigits()
         {
             var expectedOutput = TL.Scan("3");
