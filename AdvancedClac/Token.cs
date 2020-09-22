@@ -2,7 +2,7 @@ using System;
 
 namespace AdvancedClac
 {
-    public class Token //: IEquatable<Token>
+    public class Token : IEquatable<Token>
     {
         private string _value;
         private TokenTypeEnum _tokenType;
@@ -38,7 +38,7 @@ namespace AdvancedClac
             return hash;
         }
 
-       /* public override bool Equals(object other)
+        public override bool Equals(object other)
         {
             return Equals(other as Token);
         }
@@ -48,6 +48,6 @@ namespace AdvancedClac
             return other != null &&
                    this.Value == other.Value &&
                    this.TokenType == other.TokenType;
-        } */
+        } 
     }
 }

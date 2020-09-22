@@ -7,13 +7,13 @@ namespace AdvancedClac
         static void Main(string[] args)
         {
             Tokenizer TL = new Tokenizer();
-           /* foreach (var ystem in TL.Scan("55 * x + 99 - 16/4"))
+           foreach (var ystem in TL.Scan("13"))
             {
-                Console.WriteLine(ystem.GetValue);
-                Console.WriteLine(ystem.GetTokenType);
-            }*/
+                Console.WriteLine(ystem.Value);
+                Console.WriteLine(ystem.TokenType);
+            }
             
-            Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("-1-3"))));
+            //onsole.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("0.2+4"))));
         }
     }
 }
