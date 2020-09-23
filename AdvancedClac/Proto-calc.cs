@@ -162,6 +162,7 @@ namespace AdvancedClac
             //Алгоритм для преврощения строки в очередь в обратную польскую запись
             foreach (var i in stream)
             {
+                Console.WriteLine(i.Value);
                 //работа со скобками
                 if (i.Value == "(")
                     {
@@ -187,7 +188,7 @@ namespace AdvancedClac
                         }
                     }
 
-                    else if (i.TokenType == (TokenTypeEnum) Variables)
+                    else if (i.TokenType ==  Variables)
                     {
                         //Console.WriteLine(i.GetTokenType);
                         for (int l = 0; l < i.Value.Length; l++)
@@ -204,13 +205,13 @@ namespace AdvancedClac
                                 variables.Add(i.Value[l],"-Null");
                                 else
                                     variables.Add(i.Value[l],"Null");
-                                if (operatorflag > 2)
+                                if (operatorflag > 1)
                                     operators.Pop();
                                 operatorflag = 0;
                                 valueflag = true;
                             }
                         }
-                        operatorflag = 0;
+                        operatorflag = 1;
                     }
                     else if (i.TokenType == Numbers)
                     {
@@ -232,7 +233,7 @@ namespace AdvancedClac
 
                         if (operatorflag > 2)
                             operators.Pop();
-                            operatorflag = 0;
+                            operatorflag = 1;
                             valueflag = true;
                     }
                    else if (i.TokenType==Operators||(valueflag==true&&i.TokenType==Variables)){
@@ -246,15 +247,16 @@ namespace AdvancedClac
                     if (operatorflag>2)
                     {
                         valueflag = false;
-                        if (i.Value != operators.Peek())
-                        {
-                            operators.Pop();
-                            operators.Push("-");
-                        }
-                        else
+                        if (temp == (string) operators.Peek())
                         {
                             operators.Pop();
                             operators.Push("+");
+                        }
+                        else 
+                        {
+                            Console.WriteLine("here '{0}'",i.Value);
+                            operators.Pop();
+                            operators.Push("-");
                         }
                         
                     }
@@ -282,14 +284,14 @@ namespace AdvancedClac
             {
                 operands.Enqueue((string)operators.Pop());
             }
-/*
+
             while (operands.Count != 0)
             {
                 Console.WriteLine(operands.Dequeue());
             }
 
             Console.WriteLine("end");
-          */
+          
             return(operands);
         }
     }

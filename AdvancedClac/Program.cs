@@ -13,7 +13,7 @@ namespace AdvancedClac
                 Console.WriteLine(ystem.GetTokenType);
             }*/
             
-            Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("-1-3"))));
+            Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("-1+--4"))));
         }
     }
 }
