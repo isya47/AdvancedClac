@@ -79,14 +79,15 @@ namespace AdvancedClac
                 case "-":
                     return result - num2;
                 case "pow":
-                    long temp = result;
+                   /* long temp = result;
                     for (int i = 1; i < num2; i++)
                     {
                         //не знаю есть смысл или нет но тут можно сделать goto к кейсам 1 и 2
                         result *= temp;
 
                     }
-                    return result;
+*/
+                    return Math.Pow(result, num2);
             }
 
             return a;
@@ -101,6 +102,7 @@ namespace AdvancedClac
                 return ("NULL");
             while (operands.Count != 0)
             {
+                //Console.WriteLine(operands.Peek());
                 if (result.Count == 0 && !(operands.Peek() is long || operands.Peek() is double))
                 {
                     Console.WriteLine("Math error: missing operands or wrong order");
@@ -162,12 +164,11 @@ namespace AdvancedClac
             //Алгоритм для преврощения строки в очередь в обратную польскую запись
             foreach (var i in stream)
             {
-                Console.WriteLine(i.Value);
                 //работа со скобками
                 if (i.Value == "(")
                     {
                         operators.Push(i.Value);
-                        operatorflag = 1;
+                        operatorflag = 2;
                         valueflag = false;
                     }
                     else if (i.Value == ")"||i.Value==",")
@@ -179,18 +180,18 @@ namespace AdvancedClac
                         }
                         operators.Pop();
                         
-                        if(precedence[(string)operators.Peek()]==0)
+                        if(operators.Count!=0&&precedence[(string)operators.Peek()]==0)
                             operands.Enqueue(operators.Pop());
                         if (i.Value == ",")
                         {
                             operators.Push("(");
-                            operatorflag = 1;
+                            operatorflag = 2;
+                            valueflag = false;
                         }
                     }
 
                     else if (i.TokenType ==  Variables)
                     {
-                        //Console.WriteLine(i.GetTokenType);
                         for (int l = 0; l < i.Value.Length; l++)
                         {
                             if (l+2 <i.Value.Length&&precedence.ContainsKey(i.Value.Substring(l,3)))
@@ -254,7 +255,6 @@ namespace AdvancedClac
                         }
                         else 
                         {
-                            Console.WriteLine("here '{0}'",i.Value);
                             operators.Pop();
                             operators.Push("-");
                         }
@@ -274,24 +274,28 @@ namespace AdvancedClac
 
                         operators.Push(temp);
                         operatorflag++;
+                        
                     }
+                   // if(operators.Count!=0)
+                     //   Console.WriteLine(operators.Peek());
                 }
-                  //  if(operators.Count!=0)
-                   // Console.WriteLine(operators.Peek());
+
+
             }
             //Любые оставшиеся операторы добавляются в конец очереди
             while (operators.Count != 0)
             {
                 operands.Enqueue((string)operators.Pop());
             }
-
+          /*
+            Console.WriteLine("start");
             while (operands.Count != 0)
             {
                 Console.WriteLine(operands.Dequeue());
             }
 
             Console.WriteLine("end");
-          
+          */
             return(operands);
         }
     }
