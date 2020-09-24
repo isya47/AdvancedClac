@@ -203,5 +203,17 @@ namespace TestProject1
                 Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
             }
         }
+        [Test]
+        public void TestCombined1()
+        {
+            try
+            {
+                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("-3*pow(2+2,-4/2)")));
+            }
+            catch (Exception ae)
+            {
+                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
+            }
+        }
     }
 }

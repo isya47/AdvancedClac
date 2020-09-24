@@ -20,7 +20,7 @@ namespace AdvancedClac
         //Метод инициализации данных операторов. Это нужно для более простых вычислении о порядке оператаров.
         private static Dictionary<string, int> initial()
         {
-            return(new Dictionary<string, int> {{"pow",4},{"sin",0},{"cos",0},{"tan",0},{"*",3},{"/",3},{"+",2},{"-",2}});
+            return(new Dictionary<string, int> {{"pow",4},{"sin",0},{"cos",0},{"tan",0},{"*",3},{"/",3},{"+",2},{"-",2},{"|",1},{"&",2},{"~",3},{"^",2}});
         }
         /*
         private enum precedence : ushort
@@ -59,6 +59,11 @@ namespace AdvancedClac
                     return Math.Cos(num1);
                 case "tan":
                     return Math.Tan(num1);
+                case "~":
+                    Int64 bits = BitConverter.DoubleToInt64Bits(num1);
+                    bits = ~bits;
+                    num1 = BitConverter.Int64BitsToDouble(bits);
+                    return num1;
             }
 
             return 0;
@@ -88,6 +93,12 @@ namespace AdvancedClac
                     }
 */
                     return Math.Pow(result, num2);
+                case "|":
+                    return result | num2;
+                case "&":
+                    return result & num2;
+                case "^":
+                    return result ^ num2;
             }
 
             return a;
