@@ -6,14 +6,7 @@ using static AdvancedClac.TokenTypeEnum;
 //Перегрузить операции для всех типов чисел
 //Сделать умножение для переменных по умолчанию 
 namespace AdvancedClac
-{    /*public class Node
-    {
-        public readonly string type;
-        public readonly string value;
-        public unsafe void* parent;
-        public unsafe void* left;
-        public unsafe void* right;
-    }*/ 
+{    
     public class MathFunc
     {
         private static Dictionary<char,string> variables=new Dictionary<char, string>();
@@ -36,18 +29,8 @@ namespace AdvancedClac
         }
         */
 
-        /*
-        internal static T readnum<T>(Token i)
-        {
-            if (i.Value.Contains('.'))
-            {
-                return(double.Parse(i.Value));
-            }
-            else
-                return(long.Parse(i.Value));
-  
-        }
-        */
+        
+
         internal static double Unitary(double num1, string operator1)
         {
             //double num1 = double.Parse(a);
@@ -124,17 +107,15 @@ namespace AdvancedClac
                 {
                     Console.WriteLine("Enter value for '{0}'", operands.Peek());
                     variables[(char) operands.Peek()] = Console.ReadLine();
-                    switch (variables[(char) operands.Peek()])
+                    if (variables[(char) operands.Peek()] == "Null")
                     {
-                        case "Null":
-                            result.Push(double.Parse(variables[(char) operands.Dequeue()]));
-                            break;
-                        case "-Null":
-                            result.Push(double.Parse(variables[(char) operands.Dequeue()])*-1);
-                            break;
+                        result.Push(double.Parse(variables[(char) operands.Dequeue()]));
+                        Console.WriteLine("here");
                     }
+                    else if(variables[(char) operands.Peek()]=="-Null")
+                            result.Push(double.Parse(variables[(char) operands.Dequeue()])*-1);
                 }
-                else if (operands.Peek() is char && (variables[(char)operands.Peek()] == "Null"||variables[(char)operands.Peek()] == "-Null"))
+                else if (operands.Peek() is char && (variables[(char)operands.Peek()] != "Null"||variables[(char)operands.Peek()] != "-Null"))
                 {
                     result.Push(double.Parse(variables[(char) operands.Dequeue()]));
                 }
@@ -166,6 +147,7 @@ namespace AdvancedClac
         public static Queue Parsing(IEnumerable<Token> stream)
         {
             bool valueflag = false;
+            bool impliflag = false;
             Dictionary<string, int> precedence = initial();
             //Стек для операторов, функции и скобок
             Stack operators = new Stack();
@@ -177,7 +159,9 @@ namespace AdvancedClac
             {
                 //работа со скобками
                 if (i.Value == "(")
-                    {
+                {
+                    if (impliflag == true)
+                        operators.Push("*");
                         operators.Push(i.Value);
                         operatorflag = 2;
                         valueflag = false;
@@ -199,6 +183,10 @@ namespace AdvancedClac
                             operatorflag = 2;
                             valueflag = false;
                         }
+                        else
+                        {
+                            impliflag = true;
+                        }
                     }
 
                     else if (i.TokenType ==  Variables)
@@ -207,23 +195,28 @@ namespace AdvancedClac
                         {
                             if (l+2 <i.Value.Length&&precedence.ContainsKey(i.Value.Substring(l,3)))
                             {
+                                if (impliflag == true)
+                                    operators.Push("*");
                                 operators.Push(i.Value.Substring(l,3));
                                 l += 2;
+                                impliflag = true;
                             }
                             else
                             {
-                                operands.Enqueue((char)i.Value[l]);
+                                if (impliflag == true)
+                                    operators.Push("*");
+                                operands.Enqueue(i.Value[l]);
                                 if(operatorflag>2&&valueflag==false&&operators.Peek()== "-")
                                 variables.Add(i.Value[l],"-Null");
                                 else
                                     variables.Add(i.Value[l],"Null");
-                                if (operatorflag > 1)
+                                if (operatorflag > 2)
                                     operators.Pop();
-                                operatorflag = 0;
+                                operatorflag = 1;
                                 valueflag = true;
+                                impliflag = true;
                             }
                         }
-                        operatorflag = 1;
                     }
                     else if (i.TokenType == Numbers)
                     {
@@ -247,6 +240,7 @@ namespace AdvancedClac
                             operators.Pop();
                             operatorflag = 1;
                             valueflag = true;
+                            impliflag = true;
                     }
                    else if (i.TokenType==Operators||(valueflag==true&&i.TokenType==Variables)){
                     /*
@@ -289,6 +283,7 @@ namespace AdvancedClac
                     }
                    // if(operators.Count!=0)
                      //   Console.WriteLine(operators.Peek());
+                     impliflag = false;
                 }
 
 
