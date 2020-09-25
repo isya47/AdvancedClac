@@ -72,7 +72,6 @@ namespace TestProject1
             {
                 new Token("3", TokenTypeEnum.Numbers)
             };
-
             CollectionAssert.AreEqual(expected, actual);
         }
         
