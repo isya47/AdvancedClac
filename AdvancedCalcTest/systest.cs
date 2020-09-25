@@ -76,14 +76,8 @@ namespace TestProject1
         [Test]
         public void TestAddition2()
         {
-            try
-            {
-                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("4+11.5")));
-            }
-            catch (Exception ae)
-            {
-                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
-            }
+ 
+                Assert.AreEqual( "15.5", MathFunc.Eval(MathFunc.Parsing(TL.Scan("4+11.5"))) );
         }
         [Test]
         public void TestSubtraction1()
