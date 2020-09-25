@@ -156,7 +156,6 @@ namespace TestProject1
         [Test]
         public void TestMultVariables()
         {
-          
             var actual = T.Scan("a * b");
 
             List<Token> expected = new List<Token>()
