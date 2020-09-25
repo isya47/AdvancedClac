@@ -6,21 +6,14 @@ using static AdvancedClac.TokenTypeEnum;
 //Перегрузить операции для всех типов чисел
 //Сделать умножение для переменных по умолчанию 
 namespace AdvancedClac
-{    /*public class Node
-    {
-        public readonly string type;
-        public readonly string value;
-        public unsafe void* parent;
-        public unsafe void* left;
-        public unsafe void* right;
-    }*/ 
+{    
     public class MathFunc
     {
         private static Dictionary<char,string> variables=new Dictionary<char, string>();
         //Метод инициализации данных операторов. Это нужно для более простых вычислении о порядке оператаров.
         private static Dictionary<string, int> initial()
         {
-            return(new Dictionary<string, int> {{"pow",4},{"sin",0},{"cos",0},{"tan",0},{"*",3},{"/",3},{"+",2},{"-",2}});
+            return(new Dictionary<string, int> {{"pow",4},{"sin",0},{"cos",0},{"tan",0},{"*",3},{"/",3},{"+",2},{"-",2},{"|",1},{"&",2},{"~",3},{"^",2}});
         }
         /*
         private enum precedence : ushort
@@ -36,18 +29,8 @@ namespace AdvancedClac
         }
         */
 
-        /*
-        internal static T readnum<T>(Token i)
-        {
-            if (i.Value.Contains('.'))
-            {
-                return(double.Parse(i.Value));
-            }
-            else
-                return(long.Parse(i.Value));
-  
-        }
-        */
+        
+
         internal static double Unitary(double num1, string operator1)
         {
             //double num1 = double.Parse(a);
@@ -59,6 +42,11 @@ namespace AdvancedClac
                     return Math.Cos(num1);
                 case "tan":
                     return Math.Tan(num1);
+                case "~":
+                    Int64 bits = BitConverter.DoubleToInt64Bits(num1);
+                    bits = ~bits;
+                    num1 = BitConverter.Int64BitsToDouble(bits);
+                    return num1;
             }
 
             return 0;
@@ -79,14 +67,21 @@ namespace AdvancedClac
                 case "-":
                     return result - num2;
                 case "pow":
-                    long temp = result;
+                   /* long temp = result;
                     for (int i = 1; i < num2; i++)
                     {
                         //не знаю есть смысл или нет но тут можно сделать goto к кейсам 1 и 2
                         result *= temp;
 
                     }
-                    return result;
+*/
+                    return Math.Pow(result, num2);
+                case "|":
+                    return result | num2;
+                case "&":
+                    return result & num2;
+                case "^":
+                    return result ^ num2;
             }
 
             return a;
@@ -101,6 +96,7 @@ namespace AdvancedClac
                 return ("NULL");
             while (operands.Count != 0)
             {
+                //Console.WriteLine(operands.Peek());
                 if (result.Count == 0 && !(operands.Peek() is long || operands.Peek() is double))
                 {
                     Console.WriteLine("Math error: missing operands or wrong order");
@@ -111,17 +107,15 @@ namespace AdvancedClac
                 {
                     Console.WriteLine("Enter value for '{0}'", operands.Peek());
                     variables[(char) operands.Peek()] = Console.ReadLine();
-                    switch (variables[(char) operands.Peek()])
+                    if (variables[(char) operands.Peek()] == "Null")
                     {
-                        case "Null":
-                            result.Push(double.Parse(variables[(char) operands.Dequeue()]));
-                            break;
-                        case "-Null":
-                            result.Push(double.Parse(variables[(char) operands.Dequeue()])*-1);
-                            break;
+                        result.Push(double.Parse(variables[(char) operands.Dequeue()]));
+                        Console.WriteLine("here");
                     }
+                    else if(variables[(char) operands.Peek()]=="-Null")
+                            result.Push(double.Parse(variables[(char) operands.Dequeue()])*-1);
                 }
-                else if (operands.Peek() is char && (variables[(char)operands.Peek()] == "Null"||variables[(char)operands.Peek()] == "-Null"))
+                else if (operands.Peek() is char && (variables[(char)operands.Peek()] != "Null"||variables[(char)operands.Peek()] != "-Null"))
                 {
                     result.Push(double.Parse(variables[(char) operands.Dequeue()]));
                 }
@@ -153,6 +147,7 @@ namespace AdvancedClac
         public static Queue Parsing(IEnumerable<Token> stream)
         {
             bool valueflag = false;
+            bool impliflag = false;
             Dictionary<string, int> precedence = initial();
             //Стек для операторов, функции и скобок
             Stack operators = new Stack();
@@ -164,9 +159,11 @@ namespace AdvancedClac
             {
                 //работа со скобками
                 if (i.Value == "(")
-                    {
+                {
+                    if (impliflag == true)
+                        operators.Push("*");
                         operators.Push(i.Value);
-                        operatorflag = 1;
+                        operatorflag = 2;
                         valueflag = false;
                     }
                     else if (i.Value == ")"||i.Value==",")
@@ -178,39 +175,48 @@ namespace AdvancedClac
                         }
                         operators.Pop();
                         
-                        if(precedence[(string)operators.Peek()]==0)
+                        if(operators.Count!=0&&precedence[(string)operators.Peek()]==0)
                             operands.Enqueue(operators.Pop());
                         if (i.Value == ",")
                         {
                             operators.Push("(");
-                            operatorflag = 1;
+                            operatorflag = 2;
+                            valueflag = false;
+                        }
+                        else
+                        {
+                            impliflag = true;
                         }
                     }
 
-                    else if (i.TokenType == (TokenTypeEnum) Variables)
+                    else if (i.TokenType ==  Variables)
                     {
-                        //Console.WriteLine(i.GetTokenType);
                         for (int l = 0; l < i.Value.Length; l++)
                         {
                             if (l+2 <i.Value.Length&&precedence.ContainsKey(i.Value.Substring(l,3)))
                             {
+                                if (impliflag == true)
+                                    operators.Push("*");
                                 operators.Push(i.Value.Substring(l,3));
                                 l += 2;
+                                impliflag = true;
                             }
                             else
                             {
-                                operands.Enqueue((char)i.Value[l]);
+                                if (impliflag == true)
+                                    operators.Push("*");
+                                operands.Enqueue(i.Value[l]);
                                 if(operatorflag>2&&valueflag==false&&operators.Peek()== "-")
                                 variables.Add(i.Value[l],"-Null");
                                 else
                                     variables.Add(i.Value[l],"Null");
                                 if (operatorflag > 2)
                                     operators.Pop();
-                                operatorflag = 0;
+                                operatorflag = 1;
                                 valueflag = true;
+                                impliflag = true;
                             }
                         }
-                        operatorflag = 0;
                     }
                     else if (i.TokenType == Numbers)
                     {
@@ -232,8 +238,9 @@ namespace AdvancedClac
 
                         if (operatorflag > 2)
                             operators.Pop();
-                            operatorflag = 0;
+                            operatorflag = 1;
                             valueflag = true;
+                            impliflag = true;
                     }
                    else if (i.TokenType==Operators||(valueflag==true&&i.TokenType==Variables)){
                     /*
@@ -246,15 +253,15 @@ namespace AdvancedClac
                     if (operatorflag>2)
                     {
                         valueflag = false;
-                        if (i.Value != operators.Peek())
-                        {
-                            operators.Pop();
-                            operators.Push("-");
-                        }
-                        else
+                        if (temp == (string) operators.Peek())
                         {
                             operators.Pop();
                             operators.Push("+");
+                        }
+                        else 
+                        {
+                            operators.Pop();
+                            operators.Push("-");
                         }
                         
                     }
@@ -272,17 +279,22 @@ namespace AdvancedClac
 
                         operators.Push(temp);
                         operatorflag++;
+                        
                     }
+                   // if(operators.Count!=0)
+                     //   Console.WriteLine(operators.Peek());
+                     impliflag = false;
                 }
-                  //  if(operators.Count!=0)
-                   // Console.WriteLine(operators.Peek());
+
+
             }
             //Любые оставшиеся операторы добавляются в конец очереди
             while (operators.Count != 0)
             {
                 operands.Enqueue((string)operators.Pop());
             }
-/*
+          /*
+            Console.WriteLine("start");
             while (operands.Count != 0)
             {
                 Console.WriteLine(operands.Dequeue());
