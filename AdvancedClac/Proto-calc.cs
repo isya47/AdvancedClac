@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration.Internal;
+using System.Linq.Expressions;
+using System.Security.Cryptography;
 using static AdvancedClac.TokenTypeEnum;
 
 //Перегрузить операции для всех типов чисел
@@ -29,8 +32,21 @@ namespace AdvancedClac
         }
         */
 
-        
 
+
+        internal static void SYA(ref Queue operands,ref Stack operators,string temp)
+        {
+            Dictionary<string, int> precedence = initial();
+            while (operators.Count != 0 && precedence.ContainsKey((string) operators.Peek()) &&
+                   (precedence[(string) operators.Peek()] > precedence[temp] ||
+                    (precedence[(string) operators.Peek()] == precedence[temp] && temp != "pow")))
+            {
+                operands.Enqueue(operators.Pop());
+
+            }
+
+            operators.Push(temp);
+        }
         internal static double Unitary(double num1, string operator1)
         {
             //double num1 = double.Parse(a);
@@ -139,7 +155,11 @@ namespace AdvancedClac
 
                 
             }
-
+            /*
+             //for rounding off
+            if()
+                else
+                */
             return ( result.Pop().ToString());
         }
 //Функция для переводе данных в обратную польскую запись: https://ru.wikipedia.org/wiki/Алгоритм_сортировочной_станции
@@ -161,7 +181,7 @@ namespace AdvancedClac
                 if (i.Value == "(")
                 {
                     if (impliflag == true)
-                        operators.Push("*");
+                        SYA(ref operands,ref operators, "*");
                         operators.Push(i.Value);
                         operatorflag = 2;
                         valueflag = false;
@@ -195,16 +215,16 @@ namespace AdvancedClac
                         {
                             if (l+2 <i.Value.Length&&precedence.ContainsKey(i.Value.Substring(l,3)))
                             {
-                                if (impliflag == true)
-                                    operators.Push("*");
+                                if(impliflag==true)
+                                    SYA(ref operands,ref operators, "*");
                                 operators.Push(i.Value.Substring(l,3));
                                 l += 2;
-                                impliflag = true;
+                                impliflag = false;
                             }
                             else
                             {
-                                if (impliflag == true)
-                                    operators.Push("*");
+                                if(impliflag==true)
+                                    SYA(ref operands,ref operators, "*");
                                 operands.Enqueue(i.Value[l]);
                                 if(operatorflag>2&&valueflag==false&&operators.Peek()== "-")
                                 variables.Add(i.Value[l],"-Null");
@@ -218,7 +238,7 @@ namespace AdvancedClac
                             }
                         }
                     }
-                    else if (i.TokenType == Numbers)
+                else if (i.TokenType == Numbers)
                     {
                         if(operatorflag>2&&valueflag==false&&(string) operators.Peek()== "-"&&i.Value.Contains('.'))
                             operands.Enqueue(double.Parse(i.Value)*-1);
@@ -242,13 +262,7 @@ namespace AdvancedClac
                             valueflag = true;
                             impliflag = true;
                     }
-                   else if (i.TokenType==Operators||(valueflag==true&&i.TokenType==Variables)){
-                    /*
-                        switch(valueflag)
-                        case true:
-                        string temp = "*";
-                        default:
-                        */
+                   else if (i.TokenType==Operators){
                     string temp = i.Value;
                     if (operatorflag>2)
                     {
@@ -267,23 +281,14 @@ namespace AdvancedClac
                     }
                     else
                     {
+
                         //Console.WriteLine(i.GetValue);
                         //работа с оператором в стаке для операторов, разбор приоретета оператора
-                        while (operators.Count != 0 && precedence.ContainsKey((string) operators.Peek()) &&
-                               (precedence[(string) operators.Peek()] > precedence[temp] ||
-                                (precedence[(string) operators.Peek()] == precedence[temp] && temp != "pow")))
-                        {
-                            operands.Enqueue(operators.Pop());
-
-                        }
-
-                        operators.Push(temp);
+                        SYA(ref operands,ref operators, temp);
                         operatorflag++;
                         
                     }
-                   // if(operators.Count!=0)
-                     //   Console.WriteLine(operators.Peek());
-                     impliflag = false;
+                    impliflag = false;
                 }
 
 

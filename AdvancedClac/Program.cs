@@ -13,8 +13,8 @@ namespace AdvancedClac
                 Console.WriteLine(ystem.GetTokenType);
             }*/
             
-            // Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("3(3+2.2)"))));
-             Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("3*(3+2.2)*a"))));
+             //Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("sin(3+1)"))));
+             Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("1.1+2.5"))));
         }
     }
 }

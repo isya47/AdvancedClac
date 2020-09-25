@@ -37,88 +37,42 @@ namespace TestProject1
         [Test]
         public void TestSingle()
         {
-            try
-            {
-                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("1")));
-            }
-            catch (Exception ae)
-            {
-                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
-            }
+            Assert.AreEqual("1", MathFunc.Eval(MathFunc.Parsing(TL.Scan("1"))));
+            
         }
         [Test]
         public void TestAddition()
         {
-            try
-            {
-                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("1+2")));
-            }
-            catch (Exception ae)
-            {
-                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
-            }
+            Assert.AreEqual( "3", MathFunc.Eval(MathFunc.Parsing(TL.Scan("1+2"))) );
         }
         [Test]
         public void TestMultiplication()
         {
-            try
-            {
-                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("3*2")));
-            }
-            catch (Exception ae)
-            {
-                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
-            }
+            Assert.AreEqual( "6", MathFunc.Eval(MathFunc.Parsing(TL.Scan("3*2"))) );
         }
         
         [Test]
         public void TestSubtraction()
         {
-            try
-            {
-                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("3-2")));
-            }
-            catch (Exception ae)
-            {
-                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
-            }
+            Assert.AreEqual( "1", MathFunc.Eval(MathFunc.Parsing(TL.Scan("3-2"))) );
         }
         [Test]
-        public void Testdivision()
+        public void TestDivision()
         {
-            try
-            {
-                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("10/2")));
-            }
-            catch (Exception ae)
-            {
-                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
-            }
+            Assert.AreEqual( "5", MathFunc.Eval(MathFunc.Parsing(TL.Scan("10/2"))) );
         }
         [Test]
         public void TestTrigonometry()
         {
-            try
-            {
-                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("sin(3+1)")));
-            }
-            catch (Exception ae)
-            {
-                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
-            }
+            Assert.AreEqual( "-0.7568024953079282",  MathFunc.Eval(MathFunc.Parsing(TL.Scan("sin(3+1)"))) );
         }
         [Test]
         public void TestAddition1()
         {
-            try
-            {
-                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("1.1+2.5")));
-            }
-            catch (Exception ae)
-            {
-                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
-            }
-        }
+   
+
+                Assert.AreEqual( "3.6", MathFunc.Eval(MathFunc.Parsing(TL.Scan("1.1+2.5"))));
+    }
         [Test]
         public void TestAddition2()
         {
