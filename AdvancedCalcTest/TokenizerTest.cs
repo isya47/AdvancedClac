@@ -11,6 +11,7 @@ namespace TestProject1
     public class Tests
     {
         private Tokenizer _t;
+        
         [SetUp]
         public void SetUp()
         {
@@ -84,7 +85,7 @@ namespace TestProject1
             {
                 new Token("0.52", TokenTypeEnum.Numbers)
             };
-
+            
             CollectionAssert.AreEqual(expected, actual);
         }
         
