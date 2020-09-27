@@ -14,7 +14,8 @@ namespace AdvancedClac
             }*/
             
              //Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("sin(3+1)"))));
-             Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("1.1+2.5"))));
+             Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("-3.3+3"))));
+             Console.WriteLine(-3.3+3.1);
         }
     }
 }

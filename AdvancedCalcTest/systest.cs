@@ -82,26 +82,12 @@ namespace TestProject1
         [Test]
         public void TestSubtraction1()
         {
-            try
-            {
-                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("3.2-2.1")));
-            }
-            catch (Exception ae)
-            {
-                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
-            }
+            Assert.AreEqual( "1.1", MathFunc.Eval(MathFunc.Parsing(TL.Scan("3.2-2.1"))));
         }
         [Test]
         public void TestSubtraction2()
         {
-            try
-            {
-                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("3.2-3")));
-            }
-            catch (Exception ae)
-            {
-                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
-            }
+            Assert.AreEqual( "0.2", MathFunc.Eval(MathFunc.Parsing(TL.Scan("3.2-3"))));
         }
         [Test]
         public void TestMultiplication1()

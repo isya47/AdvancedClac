@@ -16,7 +16,7 @@ namespace AdvancedClac
         //Метод инициализации данных операторов. Это нужно для более простых вычислении о порядке оператаров.
         private static Dictionary<string, int> initial()
         {
-            return(new Dictionary<string, int> {{"pow",4},{"sin",0},{"cos",0},{"tan",0},{"*",3},{"/",3},{"+",2},{"-",2},{"|",1},{"&",2},{"~",3},{"^",2}});
+            return(new Dictionary<string, int> {{"pow",4},{"sin",0},{"cos",0},{"tan",0},{"*",3},{"/",3},{"+",2},{"-",2},{"|",1},{"&",2},{"~",0},{"^",2}});
         }
         /*
         private enum precedence : ushort
@@ -110,6 +110,8 @@ namespace AdvancedClac
             Stack result=new Stack();
             if (operands.Count == 0)
                 return ("NULL");
+            if (operands.Count == 1)
+                return (string) (operands.Dequeue());
             while (operands.Count != 0)
             {
                 //Console.WriteLine(operands.Peek());
@@ -121,8 +123,16 @@ namespace AdvancedClac
                 //Console.WriteLine(operands.Peek());
                 if (operands.Peek() is char && (variables[(char)operands.Peek()] == "Null"||variables[(char)operands.Peek()] == "-Null"))
                 {
-                    Console.WriteLine("Enter value for '{0}'", operands.Peek());
+                    Console.WriteLine("Enter value for '{0}': ", operands.Peek());
                     variables[(char) operands.Peek()] = Console.ReadLine();
+                    long temp = 0;
+                    while (long.TryParse(variables[(char) operands.Peek()], out temp) != true)
+                    {
+                        Console.WriteLine("Input is not of the correct format, try again: ");
+                        Console.WriteLine("Enter value for '{0}'", operands.Peek());
+                        variables[(char) operands.Peek()] = Console.ReadLine();
+                    } 
+
                     if (variables[(char) operands.Peek()] == "Null")
                     {
                         result.Push(double.Parse(variables[(char) operands.Dequeue()]));
@@ -150,7 +160,7 @@ namespace AdvancedClac
                 }
                 else
                 {
-                    return ("Syntax error");
+                    return ("Math error");
                 }
 
                 
@@ -190,7 +200,12 @@ namespace AdvancedClac
                     {
                         while ((string)operators.Peek() != "(")
                         {
-//Error check here for extra parentheses
+                            if (operators.Count == 0)
+                            {
+                                operands = new Queue();
+                                operands.Enqueue("Syntax error");
+                                return (operands);
+                            }
                             operands.Enqueue( operators.Pop());
                         }
                         operators.Pop();
