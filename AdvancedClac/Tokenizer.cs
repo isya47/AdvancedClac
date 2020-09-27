@@ -17,7 +17,7 @@ namespace AdvancedClac
     }
     public class Tokenizer
     {
-        static List<Token> tokens = new List<Token>();
+         List<Token> tokens = new List<Token>();
         public static string RemoveWhitespace(string input)
         {
             return new string(input.ToCharArray()

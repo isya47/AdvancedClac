@@ -1,23 +1,36 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using AdvancedClac;
 using FluentAssertions;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
+
 
 namespace TestProject1
 {
+    [TestFixture]
     public class Tests
     {
-        Tokenizer T = new Tokenizer();
-
+        private Tokenizer _t;
+        
+        [SetUp]
+        public void SetUp()
+        {
+            _t = new Tokenizer();
+        }
+        
+        [TearDown]
+        public void CleanUp() 
+        {
+            GC.Collect(GC.MaxGeneration);
+            _t = null;
+        }
+        
         [Test]
         public void TestEmptyString()
         {
             try
             {
-                var obj = T.Scan(" ");
+                var obj = _t.Scan(" ");
             }
             catch (Exception ae)
             {
@@ -30,51 +43,49 @@ namespace TestProject1
         {
             try
             {
-                var obj = T.Scan("#");
+                var obj = _t.Scan("#");
             }
             catch (Exception ae)
             {
                 Assert.AreEqual("Unknown symbol while tokenizing", ae.Message);
             }
         }
-
+        
         [Test]
         public void TestCharacter()
         {
-            var actual = T.Scan("a");
+            var actual = _t.Scan("a");
 
             List<Token> expected = new List<Token>()
             {
                 new Token("a", TokenTypeEnum.Variables)
             };
-
+            
             CollectionAssert.AreEqual(expected, actual);
         }
         
-        //РАБОТАЕТ ЕСЛИ ПРОАПГРЕЙДИТЬ КЛАСС ТОКЕНОВ
         [Test]
         public void TestSingleDigit()
         {
-            var actual = T.Scan("3");
+            var actual = _t.Scan("3");
 
             List<Token> expected = new List<Token>()
             {
                 new Token("3", TokenTypeEnum.Numbers)
             };
-
             CollectionAssert.AreEqual(expected, actual);
         }
         
         [Test]
         public void TestDecimal()
         {
-            var actual = T.Scan("0.52");
+            var actual = _t.Scan("0.52");
 
             List<Token> expected = new List<Token>()
             {
                 new Token("0.52", TokenTypeEnum.Numbers)
             };
-
+            
             CollectionAssert.AreEqual(expected, actual);
         }
         
@@ -82,7 +93,7 @@ namespace TestProject1
         public void TestDigits()
         {
           
-            var actual = T.Scan("13");
+            var actual = _t.Scan("13");
 
             List<Token> expected = new List<Token>()
             {
@@ -95,7 +106,7 @@ namespace TestProject1
         [Test]
         public void TestCharacterAndNumber()
         {
-            var actual = T.Scan("2a");
+            var actual = _t.Scan("2a");
 
             List<Token> expected = new List<Token>()
             {
@@ -109,7 +120,7 @@ namespace TestProject1
         [Test]
         public void TestAdditionNumbers()
         {
-            var actual = T.Scan("23 + 551");
+            var actual = _t.Scan("23 + 551");
 
             List<Token> expected = new List<Token>()
             {
@@ -125,7 +136,7 @@ namespace TestProject1
         public void TestAdditionVariables()
         {
           
-            var actual = T.Scan("a + b");
+            var actual = _t.Scan("a + b");
 
             List<Token> expected = new List<Token>()
             {
@@ -141,7 +152,7 @@ namespace TestProject1
         public void TestMultNumbers()
         {
           
-            var actual = T.Scan("55 * 21");
+            var actual = _t.Scan("55 * 21");
 
             List<Token> expected = new List<Token>()
             {
@@ -156,7 +167,7 @@ namespace TestProject1
         [Test]
         public void TestMultVariables()
         {
-            var actual = T.Scan("a * b");
+            var actual = _t.Scan("a * b");
 
             List<Token> expected = new List<Token>()
             {
@@ -172,7 +183,7 @@ namespace TestProject1
         public void TestDivNumbers()
         {
           
-            var actual = T.Scan("55 / 21");
+            var actual = _t.Scan("55 / 21");
 
             List<Token> expected = new List<Token>()
             {
@@ -187,7 +198,7 @@ namespace TestProject1
         public void TestDivVariables()
         {
           
-            var actual = T.Scan("a / b");
+            var actual = _t.Scan("a / b");
 
             List<Token> expected = new List<Token>()
             {
@@ -203,7 +214,7 @@ namespace TestProject1
         public void TestSubNumbers()
         {
           
-            var actual = T.Scan("55 - 21");
+            var actual = _t.Scan("55 - 21");
 
             List<Token> expected = new List<Token>()
             {
@@ -218,7 +229,7 @@ namespace TestProject1
         public void TestSubVariables()
         {
           
-            var actual = T.Scan("a - b");
+            var actual = _t.Scan("a - b");
 
             List<Token> expected = new List<Token>()
             {
@@ -233,7 +244,7 @@ namespace TestProject1
         public void TestLogicalOr()
         {
           
-            var actual = T.Scan("a | b");
+            var actual = _t.Scan("a | b");
 
             List<Token> expected = new List<Token>()
             {
@@ -248,7 +259,7 @@ namespace TestProject1
         public void TestLogicalAnd()
         {
           
-            var actual = T.Scan("a & b");
+            var actual = _t.Scan("a & b");
 
             List<Token> expected = new List<Token>()
             {
@@ -264,7 +275,7 @@ namespace TestProject1
         public void TestLogicalXor()
         {
           
-            var actual = T.Scan("a ^ b");
+            var actual = _t.Scan("a ^ b");
 
             List<Token> expected = new List<Token>()
             {
@@ -280,7 +291,7 @@ namespace TestProject1
         public void TestBitwiseCompl()
         {
           
-            var actual = T.Scan("~b");
+            var actual = _t.Scan("~b");
 
             List<Token> expected = new List<Token>()
             {
@@ -295,7 +306,7 @@ namespace TestProject1
         public void TestBrackets()
         {
           
-            var actual = T.Scan("a(2+c)");
+            var actual = _t.Scan("a(2+c)");
 
             List<Token> expected = new List<Token>()
             {
@@ -313,7 +324,7 @@ namespace TestProject1
         public void TestSin()
         {
           
-            var actual = T.Scan("sin(45)");
+            var actual = _t.Scan("sin(45)");
 
             List<Token> expected = new List<Token>()
             {
@@ -330,7 +341,7 @@ namespace TestProject1
         public void TestCos()
         {
           
-            var actual = T.Scan("cos(b)");
+            var actual = _t.Scan("cos(b)");
 
             List<Token> expected = new List<Token>()
             {
@@ -347,7 +358,7 @@ namespace TestProject1
         public void TestTan()
         {
           
-            var actual = T.Scan("tan(45a)");
+            var actual = _t.Scan("tan(45a)");
 
             List<Token> expected = new List<Token>()
             {
@@ -364,7 +375,7 @@ namespace TestProject1
         public void TestPow()
         {
           
-            var actual = T.Scan("pow(a,2)");
+            var actual = _t.Scan("pow(a,2)");
 
             List<Token> expected = new List<Token>()
             {

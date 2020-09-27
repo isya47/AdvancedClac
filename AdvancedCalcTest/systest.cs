@@ -6,9 +6,23 @@ using NUnit.Framework.Internal;
 
 namespace TestProject1
 {
+    [TestFixture]
     public class Calctests
     {
-        Tokenizer TL = new Tokenizer();
+        Tokenizer TL;
+        
+        [SetUp]
+        public void SetUp()
+        {
+            TL = new Tokenizer();
+        }
+        
+        [TearDown]
+        public void CleanUp() 
+        {
+            GC.Collect(GC.MaxGeneration);
+            TL = null;
+        }
         
         [Test]
         public void TestEmptyString()
@@ -69,10 +83,8 @@ namespace TestProject1
         [Test]
         public void TestAddition1()
         {
-   
-
-                Assert.AreEqual( "3.6", MathFunc.Eval(MathFunc.Parsing(TL.Scan("1.1+2.5"))));
-    }
+            Assert.AreEqual( "3.6", MathFunc.Eval(MathFunc.Parsing(TL.Scan("1.1+2.5"))));
+        }
         [Test]
         public void TestAddition2()
         {
@@ -149,5 +161,12 @@ namespace TestProject1
                 Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
             }
         }
+        [Test]
+        public void TestSin()
+        {
+            var actual = MathFunc.Eval(MathFunc.Parsing(TL.Scan("sin(30)")));
+            Assert.AreEqual( "-0.9880316240928618", actual);
+        }
+        
     }
 }
