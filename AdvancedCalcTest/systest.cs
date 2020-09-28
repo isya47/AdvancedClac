@@ -11,7 +11,6 @@ namespace TestProject1
     {
         Tokenizer TL;
         
-        
         [SetUp]
         public void SetUp()
         {

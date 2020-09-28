@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration.Internal;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
+using Microsoft.VisualBasic.CompilerServices;
 using static AdvancedClac.TokenTypeEnum;
 
 //Перегрузить операции для всех типов чисел
@@ -12,6 +13,7 @@ namespace AdvancedClac
 {    
     public class MathFunc
     {
+
         private static Dictionary<char,string> variables=new Dictionary<char, string>();
         //Метод инициализации данных операторов. Это нужно для более простых вычислении о порядке оператаров.
         private static Dictionary<string, int> initial()
@@ -33,7 +35,21 @@ namespace AdvancedClac
         */
 
 
-
+        
+        internal static void oplogic(ref Stack operators)
+        {
+            string temp = (string)operators.Pop();
+            if (temp == (string) operators.Peek())
+            {
+                operators.Pop();
+                operators.Push("+");
+            }
+            else 
+            {
+                operators.Pop();
+                operators.Push("-");
+            }
+        }
         internal static void SYA(ref Queue operands,ref Stack operators,string temp)
         {
             Dictionary<string, int> precedence = initial();
@@ -42,9 +58,7 @@ namespace AdvancedClac
                     (precedence[(string) operators.Peek()] == precedence[temp] && temp != "pow")))
             {
                 operands.Enqueue(operators.Pop());
-
             }
-
             operators.Push(temp);
         }
         internal static double Unitary(double num1, string operator1)
@@ -111,7 +125,7 @@ namespace AdvancedClac
             if (operands.Count == 0)
                 return ("NULL");
             if (operands.Count == 1)
-                return (string) (operands.Dequeue());
+                return (operands.Dequeue().ToString());
             while (operands.Count != 0)
             {
                 //Console.WriteLine(operands.Peek());
@@ -187,10 +201,15 @@ namespace AdvancedClac
             //Алгоритм для преврощения строки в очередь в обратную польскую запись
             foreach (var i in stream)
             {
+                Console.WriteLine(i.Value);
                 //работа со скобками
                 if (i.Value == "(")
                 {
-                    if (impliflag == true)
+                    if (operatorflag > 2)
+                    {
+                        oplogic(ref operators);
+                    }
+                    if (impliflag)
                         SYA(ref operands,ref operators, "*");
                         operators.Push(i.Value);
                         operatorflag = 2;
@@ -230,6 +249,10 @@ namespace AdvancedClac
                         {
                             if (l+2 <i.Value.Length&&precedence.ContainsKey(i.Value.Substring(l,3)))
                             {
+                                if (operatorflag > 2)
+                                {
+                                    oplogic(ref operators);
+                                }
                                 if(impliflag==true)
                                     SYA(ref operands,ref operators, "*");
                                 operators.Push(i.Value.Substring(l,3));
@@ -271,15 +294,16 @@ namespace AdvancedClac
 
                         }
 
-                        if (operatorflag > 2)
+                        if (operatorflag > 2&&(operators.Peek()=="+"||operators.Peek()=="-"))
+                            
                             operators.Pop();
                             operatorflag = 1;
                             valueflag = true;
                             impliflag = true;
                     }
-                   else if (i.TokenType==Operators){
+                   else if (i.TokenType==TokenTypeEnum.Operators){
                     string temp = i.Value;
-                    if (operatorflag>2)
+                    if (operatorflag > 2&&(operators.Peek()=="+"||operators.Peek()=="-"))
                     {
                         valueflag = false;
                         if (temp == (string) operators.Peek())
@@ -296,7 +320,6 @@ namespace AdvancedClac
                     }
                     else
                     {
-
                         //Console.WriteLine(i.GetValue);
                         //работа с оператором в стаке для операторов, разбор приоретета оператора
                         SYA(ref operands,ref operators, temp);
@@ -305,8 +328,6 @@ namespace AdvancedClac
                     }
                     impliflag = false;
                 }
-
-
             }
             //Любые оставшиеся операторы добавляются в конец очереди
             while (operators.Count != 0)
