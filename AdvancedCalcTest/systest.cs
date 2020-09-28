@@ -151,5 +151,132 @@ namespace TestProject1
             var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("60^13")));
             Assert.AreEqual("49",output);
         }
+        
+        [Test]
+        public void TestWholeOnesCompl()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("~60")));
+            Assert.AreEqual("-61",output);
+        }
+        
+        
+        /// 
+        /// ТЕСТЫ ДЕСЯТИЧНЫХ ЧИСЕЛ
+        ///
+        
+        
+        [Test]
+        public void TestDecimalNumber()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("0.5")));
+            Assert.AreEqual("0.5", output);
+        }
+
+        [Test]
+        public void TestDecimalAddition()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("0.25+0.5")));
+            Assert.AreEqual("0.75",output);
+        }
+        
+        [Test]
+        public void TestDeciamlSubstraction()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("0.6-0.4")));
+            Assert.AreEqual("0.2",output);
+        }
+        
+        [Test]
+        public void TestDecimalMult()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("0.4*0.5")));
+            Assert.AreEqual("0.2",output);
+        }
+        
+        [Test]
+        public void TestDecimalDivision()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("1.6/0.5")));
+            Assert.AreEqual("3.2",output);
+        }
+        
+        [Test]
+        public void TestDecimalBrackets()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("0.5*(1.5-0.3)")));
+            Assert.AreEqual("0.6",output);
+        }
+        
+        [Test]
+        public void TestDecimalSin()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("sin(0.5)")));
+            Assert.AreEqual("0.479425538604203",output);
+        }
+        
+        [Test]
+        public void TestDecimalCos()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("cos(0.5)")));
+            Assert.AreEqual("0.8775825618903728",output);
+        }
+        
+        [Test]
+        public void TestDecimalTan()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("tan(0.5)")));
+            Assert.AreEqual("0.5463024898437905",output);
+        }
+        
+        [Test]
+        public void TestDecimalPow()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("pow(0.5,0.3)")));
+            Assert.AreEqual("0.8122523963562356",output);
+        }
+        
+        [Test]
+        public void TestDecimalNegative()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("-0.5+1")));
+            Assert.AreEqual("0.5",output);
+        }
+        
+        [Test]
+        public void TestDecimalZero()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("0*0.55")));
+            Assert.AreEqual("0",output);
+        }
+        
+        [Test]
+        public void TestDecimalOr()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("")));
+            Assert.AreEqual("",output);
+        }
+        
+        [Test]
+        public void TestDecimalAnd()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("")));
+            Assert.AreEqual("",output);
+        }
+        
+        [Test]
+        public void TestDecimalXor()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("")));
+            Assert.AreEqual("",output);
+        }
+        
+        [Test]
+        public void TestDecimalOnesCompl()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("")));
+            Assert.AreEqual("",output);
+        }
+        
+        
     }
 }
