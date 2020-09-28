@@ -201,7 +201,7 @@ namespace AdvancedClac
             //Алгоритм для преврощения строки в очередь в обратную польскую запись
             foreach (var i in stream)
             {
-                Console.WriteLine(i.Value);
+                //Console.WriteLine(i.Value);
                 //работа со скобками
                 if (i.Value == "(")
                 {
@@ -278,12 +278,14 @@ namespace AdvancedClac
                     }
                 else if (i.TokenType == Numbers)
                     {
-                        if(operatorflag>2&&valueflag==false&&(string) operators.Peek()== "-"&&i.Value.Contains('.'))
-                            operands.Enqueue(double.Parse(i.Value)*-1);
+                        if (operatorflag > 2 && valueflag == false && (string) operators.Peek() == "-" &&
+                            i.Value.Contains('.'))
+                        {
+                            operands.Enqueue(double.Parse(i.Value) * -1);
+                        }
                         else if (operatorflag > 2 && valueflag == false && (string) operators.Peek() == "-" && !i.Value.Contains('.'))
                         {
                             operands.Enqueue(long.Parse(i.Value) * -1);
-                            
                         }
                         else if(!(operatorflag>2&&valueflag==false&&(string) operators.Peek()=="-")&&i.Value.Contains('.'))
                             operands.Enqueue(double.Parse(i.Value));
@@ -294,10 +296,13 @@ namespace AdvancedClac
 
                         }
 
-                        if (operatorflag > 2&&(operators.Peek()=="+"||operators.Peek()=="-"))
+                        if (operatorflag > 2 && ((string) operators.Peek() == "+" || (string) operators.Peek() == "-"))
+                        {
                             
                             operators.Pop();
-                            operatorflag = 1;
+                        }
+
+                        operatorflag = 1;
                             valueflag = true;
                             impliflag = true;
                     }
@@ -328,13 +333,15 @@ namespace AdvancedClac
                     }
                     impliflag = false;
                 }
+                //if(operators.Count!=0)
+                    //Console.WriteLine("peek '{0}'",operators.Peek());
             }
             //Любые оставшиеся операторы добавляются в конец очереди
             while (operators.Count != 0)
             {
                 operands.Enqueue((string)operators.Pop());
             }
-          /*
+        /*
             Console.WriteLine("start");
             while (operands.Count != 0)
             {
