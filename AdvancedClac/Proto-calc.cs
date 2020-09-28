@@ -73,10 +73,7 @@ namespace AdvancedClac
                 case "tan":
                     return Math.Tan(num1);
                 case "~":
-                    Int64 bits = BitConverter.DoubleToInt64Bits(num1);
-                    bits = ~bits;
-                    num1 = BitConverter.Int64BitsToDouble(bits);
-                    return num1;
+                    return ~(int)num1;
             }
 
             return 0;
