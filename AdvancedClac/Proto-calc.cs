@@ -36,10 +36,9 @@ namespace AdvancedClac
 
 
         
-        internal static void oplogic(ref Stack operators)
+        internal static void oplogic(ref Stack operators, string operatorflag)
         {
-            string temp = (string)operators.Pop();
-            if (temp == (string) operators.Peek())
+            if (operatorflag == (string) operators.Peek())
             {
                 operators.Pop();
                 operators.Push("+");
@@ -57,6 +56,7 @@ namespace AdvancedClac
                    (precedence[(string) operators.Peek()] > precedence[temp] ||
                     (precedence[(string) operators.Peek()] == precedence[temp] && temp != "pow")))
             {
+                Console.WriteLine("Enqueing: '{0}'",operators.Peek());
                 operands.Enqueue(operators.Pop());
             }
             operators.Push(temp);
@@ -194,23 +194,23 @@ namespace AdvancedClac
             Stack operators = new Stack();
             //Очередь для чисел а так же то что возращяется из метода
             Queue operands= new Queue();
-            int operatorflag = 2;
+            string operatorflag = null;
             //Алгоритм для преврощения строки в очередь в обратную польскую запись
             foreach (var i in stream)
             {
-                //Console.WriteLine(i.Value);
+                Console.WriteLine(i.Value);
                 //работа со скобками
                 if (i.Value == "(")
+                    
                 {
-                    if (operatorflag > 2)
+                    if (operatorflag!=null)
                     {
-                        oplogic(ref operators);
+                        oplogic(ref operators, operatorflag);
                     }
                     if (impliflag)
                         SYA(ref operands,ref operators, "*");
-                        operators.Push(i.Value);
-                        operatorflag = 2;
-                        valueflag = false;
+                    operators.Push(i.Value);
+                    valueflag = false;
                     }
                     else if (i.Value == ")"||i.Value==",")
                     {
@@ -223,6 +223,7 @@ namespace AdvancedClac
                                 return (operands);
                             }
                             operands.Enqueue( operators.Pop());
+                            valueflag = true;
                         }
                         operators.Pop();
                         
@@ -231,7 +232,6 @@ namespace AdvancedClac
                         if (i.Value == ",")
                         {
                             operators.Push("(");
-                            operatorflag = 2;
                             valueflag = false;
                         }
                         else
@@ -246,9 +246,9 @@ namespace AdvancedClac
                         {
                             if (l+2 <i.Value.Length&&precedence.ContainsKey(i.Value.Substring(l,3)))
                             {
-                                if (operatorflag > 2)
+                                if (operatorflag!=null)
                                 {
-                                    oplogic(ref operators);
+                                    oplogic(ref operators, operatorflag);
                                 }
                                 if(impliflag==true)
                                     SYA(ref operands,ref operators, "*");
@@ -261,13 +261,12 @@ namespace AdvancedClac
                                 if(impliflag==true)
                                     SYA(ref operands,ref operators, "*");
                                 operands.Enqueue(i.Value[l]);
-                                if(operatorflag>2&&valueflag==false&&operators.Peek()== "-")
+                                if(operatorflag!=null&&valueflag==false&&(string) operators.Peek()== "-")
                                 variables.Add(i.Value[l],"-Null");
                                 else
                                     variables.Add(i.Value[l],"Null");
-                                if (operatorflag > 2)
-                                    operators.Pop();
-                                operatorflag = 1;
+                                if (operatorflag != null)
+                                    operatorflag = null;
                                 valueflag = true;
                                 impliflag = true;
                             }
@@ -275,58 +274,55 @@ namespace AdvancedClac
                     }
                 else if (i.TokenType == Numbers)
                     {
-                        if (operatorflag > 2 && valueflag == false && (string) operators.Peek() == "-" &&
+                        if (operatorflag!=null && valueflag == false &&  operatorflag == "-" &&
                             i.Value.Contains('.'))
                         {
                             operands.Enqueue(double.Parse(i.Value) * -1);
                         }
-                        else if (operatorflag > 2 && valueflag == false && (string) operators.Peek() == "-" && !i.Value.Contains('.'))
+                        else if (operatorflag!=null && valueflag == false && (string) operatorflag== "-" && !i.Value.Contains('.'))
                         {
                             operands.Enqueue(long.Parse(i.Value) * -1);
                         }
-                        else if(!(operatorflag>2&&valueflag==false&&(string) operators.Peek()=="-")&&i.Value.Contains('.'))
+                        else if(!(operatorflag!=null&&valueflag==false&&(string) operatorflag=="-")&&i.Value.Contains('.'))
                             operands.Enqueue(double.Parse(i.Value));
-                        else if (!(operatorflag > 2 && valueflag == false && (string) operators.Peek() == "-") &&
+                        else if (!(operatorflag!=null && valueflag == false && (string) operatorflag== "-") &&
                                  !i.Value.Contains('.'))
                         {
                             operands.Enqueue(long.Parse(i.Value));
 
                         }
 
-                        if (operatorflag > 2 && ((string) operators.Peek() == "+" || (string) operators.Peek() == "-"))
+                        if (operatorflag!=null)
                         {
-                            
-                            operators.Pop();
+                            operatorflag=null;
                         }
-
-                        operatorflag = 1;
-                            valueflag = true;
+                        valueflag = true;
                             impliflag = true;
                     }
                    else if (i.TokenType==TokenTypeEnum.Operators){
                     string temp = i.Value;
-                    if (operatorflag > 2&&(operators.Peek()=="+"||operators.Peek()=="-"))
+                    if (operatorflag=="+"||operatorflag=="-")
                     {
                         valueflag = false;
-                        if (temp == (string) operators.Peek())
-                        {
-                            operators.Pop();
-                            operators.Push("+");
-                        }
-                        else 
-                        {
-                            operators.Pop();
-                            operators.Push("-");
-                        }
-                        
+                        if (temp == operatorflag)
+                            operatorflag = "+";
+                        else
+                            operatorflag = "-";
+
                     }
                     else
                     {
-                        //Console.WriteLine(i.GetValue);
-                        //работа с оператором в стаке для операторов, разбор приоретета оператора
-                        SYA(ref operands,ref operators, temp);
-                        operatorflag++;
-                        
+                        if (valueflag == true)
+                        {
+                            //Console.WriteLine(i.GetValue);
+                            //работа с оператором в стаке для операторов, разбор приоретета оператора
+                            SYA(ref operands, ref operators, temp);
+                            valueflag = false;
+                        }
+                        else
+                        {
+                            operatorflag = temp;
+                        }
                     }
                     impliflag = false;
                 }
