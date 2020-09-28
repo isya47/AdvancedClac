@@ -132,10 +132,24 @@ namespace TestProject1
         }
         
         [Test]
-        public void TestWhole()
+        public void TestWholeOr()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("25+32")));
-            Assert.AreEqual("57",output);
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("60|13")));
+            Assert.AreEqual("61",output);
+        }
+        
+        [Test]
+        public void TestWholeAnd()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("60&13")));
+            Assert.AreEqual("12",output);
+        }
+        
+        [Test]
+        public void TestWholeXor()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("60^13")));
+            Assert.AreEqual("49",output);
         }
     }
 }
