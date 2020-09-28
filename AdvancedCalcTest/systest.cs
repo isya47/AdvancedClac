@@ -49,124 +49,93 @@ namespace TestProject1
             }
         }
         [Test]
-        public void TestSingle()
+        public void TestWholeNumber()
         {
             Assert.AreEqual("1", MathFunc.Eval(MathFunc.Parsing(TL.Scan("1"))));
-            
         }
+
         [Test]
-        public void TestAddition()
+        public void TestWholeAddition()
         {
-            Assert.AreEqual( "3", MathFunc.Eval(MathFunc.Parsing(TL.Scan("1+2"))) );
-        }
-        [Test]
-        public void TestMultiplication()
-        {
-            Assert.AreEqual( "6", MathFunc.Eval(MathFunc.Parsing(TL.Scan("3*2"))) );
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("25+32")));
+            Assert.AreEqual("57",output);
         }
         
         [Test]
-        public void TestSubtraction()
+        public void TestWholeSubstraction()
         {
-            Assert.AreEqual( "1", MathFunc.Eval(MathFunc.Parsing(TL.Scan("3-2"))) );
-        }
-        [Test]
-        public void TestDivision()
-        {
-            Assert.AreEqual( "5", MathFunc.Eval(MathFunc.Parsing(TL.Scan("10/2"))) );
-        }
-        [Test]
-        public void TestTrigonometry()
-        {
-            Assert.AreEqual( "-0.7568024953079282",  MathFunc.Eval(MathFunc.Parsing(TL.Scan("sin(3+1)"))) );
-        }
-        [Test]
-        public void TestAddition1()
-        {
-            Assert.AreEqual( "3.6", MathFunc.Eval(MathFunc.Parsing(TL.Scan("1.1+2.5"))));
-        }
-        [Test]
-        public void TestAddition2()
-        {
- 
-                Assert.AreEqual( "15.5", MathFunc.Eval(MathFunc.Parsing(TL.Scan("4+11.5"))) );
-        }
-        [Test]
-        public void TestSubtraction1()
-        {
-            Assert.AreEqual( "1.1", MathFunc.Eval(MathFunc.Parsing(TL.Scan("3.2-2.1"))));
-        }
-        [Test]
-        public void TestSubtraction2()
-        {
-            Assert.AreEqual( "0.2", MathFunc.Eval(MathFunc.Parsing(TL.Scan("3.2-3"))));
-        }
-        [Test]
-        public void TestMultiplication1()
-        {
-            try
-            {
-                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("3.2*3.4")));
-            }
-            catch (Exception ae)
-            {
-                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
-            }
-        }
-        [Test]
-        public void TestMultiplication2()
-        {
-            try
-            {
-                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("3.2*3")));
-            }
-            catch (Exception ae)
-            {
-                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
-            }
-        }
-        [Test]
-        public void TestDivision1()
-        {
-            try
-            {
-                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("4.4/3.2")));
-            }
-            catch (Exception ae)
-            {
-                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
-            }
-        }
-        [Test]
-        public void TestDivision2()
-        {
-            try
-            {
-                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("3/3.5")));
-            }
-            catch (Exception ae)
-            {
-                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
-            }
-        }
-        [Test]
-        public void TestCombined1()
-        {
-            try
-            {
-                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("-3*pow(2+2,-4/2)")));
-            }
-            catch (Exception ae)
-            {
-                Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
-            }
-        }
-        [Test]
-        public void TestSin()
-        {
-            var actual = MathFunc.Eval(MathFunc.Parsing(TL.Scan("sin(30)")));
-            Assert.AreEqual( "-0.9880316240928618", actual);
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("1000-999")));
+            Assert.AreEqual("1",output);
         }
         
+        [Test]
+        public void TestWholeMult()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("122*14")));
+            Assert.AreEqual("1708",output);
+        }
+        
+        [Test]
+        public void TestWholeDivision()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("5684/4")));
+            Assert.AreEqual("1421",output);
+        }
+        
+        [Test]
+        public void TestWholeBrackets()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("2*(4-3)")));
+            Assert.AreEqual("2",output);
+        }
+        
+        [Test]
+        public void TestWholeSin()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("sin(30)")));
+            Assert.AreEqual("-0.9880316240928618",output);
+        }
+        
+        [Test]
+        public void TestWholeCos()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("cos(30)")));
+            Assert.AreEqual("0.15425144988758405",output);
+        }
+        
+        [Test]
+        public void TestWholeTan()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("tan(50)")));
+            Assert.AreEqual("-0.2719006119976307",output);
+        }
+        
+        [Test]
+        public void TestWholePow()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("pow(2,3)")));
+            Assert.AreEqual("8",output);
+        }
+        
+        [Test]
+        public void TestWholeNegative()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("-4+2")));
+            Assert.AreEqual("-2",output);
+        }
+        
+        [Test]
+        public void TestWholeZero()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("0*5")));
+            Assert.AreEqual("0",output);
+        }
+        
+        [Test]
+        public void TestWhole()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("25+32")));
+            Assert.AreEqual("57",output);
+        }
     }
 }
