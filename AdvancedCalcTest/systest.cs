@@ -252,14 +252,14 @@ namespace TestProject1
         [Test]
         public void TestDecimalOr()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("")));
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("0.5|0.2")));
             Assert.AreEqual("",output);
         }
         
         [Test]
         public void TestDecimalAnd()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("")));
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("0.5&0.2")));
             Assert.AreEqual("",output);
         }
         

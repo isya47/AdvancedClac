@@ -94,16 +94,9 @@ namespace AdvancedClac
                 case "-":
                     return result - num2;
                 case "pow":
-                   /* long temp = result;
-                    for (int i = 1; i < num2; i++)
-                    {
-                        //не знаю есть смысл или нет но тут можно сделать goto к кейсам 1 и 2
-                        result *= temp;
-
-                    }
-*/
                     return Math.Pow(result, num2);
                 case "|":
+                    //result=
                     return result | num2;
                 case "&":
                     return result & num2;
