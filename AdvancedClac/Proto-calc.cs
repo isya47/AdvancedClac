@@ -118,8 +118,8 @@ namespace AdvancedClac
                 return (operands.Dequeue().ToString());
             while (operands.Count != 0)
             {
-                //Console.WriteLine(operands.Peek());
-                if (result.Count == 0 && !(operands.Peek() is long || operands.Peek() is double))
+                Console.WriteLine(operands.Peek().GetType());
+                if (result.Count == 0 && !(operands.Peek() is long || operands.Peek() is double||operands.Peek() is char))
                 {
                     Console.WriteLine("Math error: missing operands or wrong order");
                     return ("NULL");
@@ -191,7 +191,7 @@ namespace AdvancedClac
             //Алгоритм для преврощения строки в очередь в обратную польскую запись
             foreach (var i in stream)
             {
-                Console.WriteLine(i.Value);
+                //Console.WriteLine(i.Value);
                 //работа со скобками
                 if (i.Value == "(")
                     

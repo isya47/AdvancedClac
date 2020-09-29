@@ -16,8 +16,8 @@ namespace AdvancedClac
            dynamic num2 = 0.5;
            dynamic result = 0.2;
              //Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("sin(3+1)"))));
-             Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("2+a"))));
-             Console.WriteLine(num2|result);
+             Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("a+0.2"))));
+             //Console.WriteLine(num2|result);
         }
     }
 }
