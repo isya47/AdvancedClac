@@ -18,7 +18,7 @@ namespace AdvancedClac
         //Метод инициализации данных операторов. Это нужно для более простых вычислении о порядке оператаров.
         private static Dictionary<string, int> initial()
         {
-            return(new Dictionary<string, int> {{"pow",4},{"sin",0},{"cos",0},{"tan",0},{"*",3},{"/",3},{"+",2},{"-",2},{"|",1},{"&",2},{"~",0},{"^",2}});
+            return(new Dictionary<string, int> {{"pow",4},{"sin",0},{"cos",0},{"tan",0},{"*",3},{"/",3},{"+",2},{"-",2},{"|",1},{"&",2},{"~",4},{"^",2}});
         }
         /*
         private enum precedence : ushort
@@ -118,7 +118,6 @@ namespace AdvancedClac
                 return (operands.Dequeue().ToString());
             while (operands.Count != 0)
             {
-                Console.WriteLine(operands.Peek().GetType());
                 if (result.Count == 0 && !(operands.Peek() is long || operands.Peek() is double||operands.Peek() is char))
                 {
                     Console.WriteLine("Math error: missing operands or wrong order");
@@ -191,7 +190,7 @@ namespace AdvancedClac
             //Алгоритм для преврощения строки в очередь в обратную польскую запись
             foreach (var i in stream)
             {
-                //Console.WriteLine(i.Value);
+                Console.WriteLine(i.Value);
                 //работа со скобками
                 if (i.Value == "(")
                     
@@ -305,7 +304,7 @@ namespace AdvancedClac
                     }
                     else
                     {
-                        if (valueflag == true)
+                        if (valueflag == true||temp=="~")
                         {
                             //Console.WriteLine(i.GetValue);
                             //работа с оператором в стаке для операторов, разбор приоретета оператора
@@ -327,7 +326,7 @@ namespace AdvancedClac
             {
                 operands.Enqueue((string)operators.Pop());
             }
-        /*
+        
             Console.WriteLine("start");
             while (operands.Count != 0)
             {
@@ -335,7 +334,7 @@ namespace AdvancedClac
             }
 
             Console.WriteLine("end");
-          */
+          
             return(operands);
         }
     }
