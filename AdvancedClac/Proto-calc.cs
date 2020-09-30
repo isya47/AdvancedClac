@@ -83,32 +83,39 @@ namespace AdvancedClac
         {
             dynamic num2 = a;
             dynamic result = b;
-            switch (operator1)
+            try
             {
-                case "/":
-                    return result / num2;
-                case "*":
-                    return result * num2;
-                case "+":
-                    return result + num2;
-                case "-":
-                    return result - num2;
-                case "pow":
-                   /* long temp = result;
-                    for (int i = 1; i < num2; i++)
-                    {
-                        //не знаю есть смысл или нет но тут можно сделать goto к кейсам 1 и 2
-                        result *= temp;
-
-                    }
-*/
-                    return Math.Pow(result, num2);
-                case "|":
-                    return result | num2;
-                case "&":
-                    return result & num2;
-                case "^":
-                    return result ^ num2;
+                switch (operator1)
+                {
+                    case "/":
+                        return result / num2;
+                    case "*":
+                        return result * num2;
+                    case "+":
+                        return result + num2;
+                    case "-":
+                        return result - num2;
+                    case "pow":
+                        /* long temp = result;
+                         for (int i = 1; i < num2; i++)
+                         {
+                             //не знаю есть смысл или нет но тут можно сделать goto к кейсам 1 и 2
+                             result *= temp;
+     
+                         }
+     */
+                        return Math.Pow(result, num2);
+                    case "|":
+                        return result | num2;
+                    case "&":
+                        return result & num2;
+                    case "^":
+                        return result ^ num2;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Invalid Antiunitary Opearion");
             }
 
             return a;
