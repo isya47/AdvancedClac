@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using AdvancedClac;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using System;
+using System.IO;
+using System.IO.Pipes;
+using System.Diagnostics;
 
 namespace TestProject1
 {
@@ -252,31 +256,108 @@ namespace TestProject1
         [Test]
         public void TestDecimalOr()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("0.5|0.2")));
-            Assert.AreEqual("",output);
+            try
+            {
+                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("0.5|0.2")));
+            }
+            catch (Exception ae)
+            {
+                Assert.AreEqual( "Math Error: decimal numbers are incompatible with logic operations", ae.Message );
+            }
         }
         
         [Test]
         public void TestDecimalAnd()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("0.5&0.2")));
-            Assert.AreEqual("",output);
+            try
+            {
+                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("0.5&0.2")));
+            }
+            catch (Exception ae)
+            {
+                Assert.AreEqual( "Math Error: decimal numbers are incompatible with logic operations", ae.Message );
+            }
         }
         
         [Test]
         public void TestDecimalXor()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("")));
-            Assert.AreEqual("",output);
+            try
+            {
+                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("0.5^0.2")));
+            }
+            catch (Exception ae)
+            {
+                Assert.AreEqual( "Math Error: decimal numbers are incompatible with logic operations", ae.Message );
+            }
         }
         
         [Test]
         public void TestDecimalOnesCompl()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("")));
-            Assert.AreEqual("",output);
+            try
+            {
+                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("~0.5")));
+            }
+            catch (Exception ae)
+            {
+                Assert.AreEqual( "Math Error: decimal numbers are incompatible with logic operations", ae.Message );
+            }
         }
         
-        
+        [Test]
+        public void TestVariableAddition()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("10+a"),new Dictionary<char, string>{{'a',"2"}}));
+            Assert.AreEqual("12",output);
+        }
+        [Test]
+        public void TestVariableSubtraction()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("10-a"),new Dictionary<char, string>{{'a',"2"}}));
+            Assert.AreEqual("8",output);
+        }
+        [Test]
+        public void TestVariableMultiplication()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("10a"),new Dictionary<char, string>{{'a',"2"}}));
+            Assert.AreEqual("20",output);
+        }
+        [Test]
+        public void TestVariableDivision()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("10/a"),new Dictionary<char, string>{{'a',"2"}}));
+            Assert.AreEqual("5",output);
+        }
+        [Test]
+        public void TestVariablePow()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("pow(2,a)"),new Dictionary<char, string>{{'a',"2"}}));
+            Assert.AreEqual("4",output);
+        }
+        [Test]
+        public void TestVariableAnd()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("4&a"),new Dictionary<char, string>{{'a',"5"}}));
+            Assert.AreEqual("5",output);
+        }
+        [Test]
+        public void TestVariableOr()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("4|a"),new Dictionary<char, string>{{'a',"5"}}));
+            Assert.AreEqual("5",output);
+        }
+        [Test]
+        public void TestVariableXor()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("10^a"),new Dictionary<char, string>{{'a',"5"}}));
+            Assert.AreEqual("15",output);
+        }
+        [Test]
+        public void TestVariableComplement()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("~a"),new Dictionary<char, string>{{'a',"5"}}));
+            Assert.AreEqual("-6",output);
+        }
     }
 }

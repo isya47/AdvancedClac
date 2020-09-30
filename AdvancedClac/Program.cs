@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AdvancedClac
 {
@@ -7,10 +8,10 @@ namespace AdvancedClac
         static void Main(string[] args)
         {
             Tokenizer TL = new Tokenizer();
-
-             //Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("sin(3+1)"))));
-             Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("3*pow(3+2,9)a"))));
-             //Console.WriteLine(num2|result);
+            
+             //Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("3&2"))));
+             Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("3a&b"),new Dictionary<char, string>{{'a',"0.2"},{'b',"4"}})));
+             //Console.WriteLine(~2);
         }
     }
 }
