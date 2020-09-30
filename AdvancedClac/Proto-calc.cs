@@ -64,16 +64,27 @@ namespace AdvancedClac
         internal static double Unitary(double num1, string operator1)
         {
             //double num1 = double.Parse(a);
-            switch (operator1)
+            try
             {
-                case "sin":
-                    return Math.Sin(num1);
-                case "cos":
-                    return Math.Cos(num1);
-                case "tan":
-                    return Math.Tan(num1);
-                case "~":
-                    return ~(int)num1;
+
+
+
+                switch (operator1)
+                {
+                    case "sin":
+                        return Math.Sin(num1);
+                    case "cos":
+                        return Math.Cos(num1);
+                    case "tan":
+                        return Math.Tan(num1);
+                    case "~":
+                        return ~(int) num1;
+                }
+            }
+            
+            catch (Exception e)
+            {
+                throw new Exception("Invalid Unitary Operation"); 
             }
 
             return 0;
@@ -115,7 +126,7 @@ namespace AdvancedClac
             }
             catch (Exception e)
             {
-                throw new Exception("Invalid Antiunitary Opearion");
+                throw new Exception("Invalid Antiunitary Operation");
             }
 
             return a;

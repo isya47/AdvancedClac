@@ -261,7 +261,7 @@ namespace TestProject1
             }
             catch (Exception ae)
             {
-                Assert.AreEqual( "Invalid Antiunitary Opearion", ae.Message );
+                Assert.AreEqual( "Invalid Antiunitary Operation", ae.Message );
             }
         }
         
@@ -274,7 +274,7 @@ namespace TestProject1
             }
             catch (Exception ae)
             {
-                Assert.AreEqual( "Invalid Antiunitary Opearion", ae.Message );
+                Assert.AreEqual( "Invalid Antiunitary Operation", ae.Message );
             }
         }
         
@@ -287,15 +287,21 @@ namespace TestProject1
             }
             catch (Exception ae)
             {
-                Assert.AreEqual( "Invalid Antiunitary Opearion", ae.Message );
+                Assert.AreEqual( "Invalid Antiunitary Operation", ae.Message );
             }
         }
         
         [Test]
         public void TestDecimalOnesCompl()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("~0.5")));
-            Assert.AreEqual("",output);
+            try
+            {
+                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("~0.5")));
+            }
+            catch (Exception ae)
+            {
+                Assert.AreEqual( "Invalid Unitary Operation", ae.Message );
+            }
         }
         
         
