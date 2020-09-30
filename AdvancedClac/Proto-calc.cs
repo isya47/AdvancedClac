@@ -130,7 +130,7 @@ namespace AdvancedClac
             Dictionary<string, int> precedence = initial();
             Stack result=new Stack();
             if (operands.Count == 0)
-                return ("NULL");
+                return (null);
             if (operands.Count == 1)
                 return (operands.Dequeue().ToString());
             while (operands.Count != 0)
