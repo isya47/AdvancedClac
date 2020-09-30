@@ -10,8 +10,8 @@ namespace AdvancedClac
             Tokenizer TL = new Tokenizer();
             
              //Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("3&2"))));
-             Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("3a&b"),new Dictionary<char, string>{{'a',"0.2"},{'b',"4"}})));
-             //Console.WriteLine(~2);
+             //Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("3a&b"),new Dictionary<char, string>{{'a',"0.2"},{'b',"4"}})));
+             Console.WriteLine(~2);
         }
     }
 }
