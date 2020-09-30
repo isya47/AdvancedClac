@@ -36,6 +36,7 @@ namespace TestProject1
                 Assert.AreEqual( "Empty String", ae.Message );
             }
         }
+        
         [Test]
         public void TestInvalidSymbol()
         {
@@ -48,6 +49,7 @@ namespace TestProject1
                 Assert.AreEqual( "Unknown symbol while tokenizing", ae.Message );
             }
         }
+        
         [Test]
         public void TestWholeNumber()
         {
@@ -249,31 +251,50 @@ namespace TestProject1
             Assert.AreEqual("0",output);
         }
         
+        
         [Test]
         public void TestDecimalOr()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("")));
-            Assert.AreEqual("",output);
+            try
+            {
+                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("0.5|0.3")));
+            }
+            catch (Exception ae)
+            {
+                Assert.AreEqual( "Invalid Antiunitary Opearion", ae.Message );
+            }
         }
         
         [Test]
         public void TestDecimalAnd()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("")));
-            Assert.AreEqual("",output);
+            try
+            {
+                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("0.5&0.3")));
+            }
+            catch (Exception ae)
+            {
+                Assert.AreEqual( "Invalid Antiunitary Opearion", ae.Message );
+            }
         }
         
         [Test]
         public void TestDecimalXor()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("")));
-            Assert.AreEqual("",output);
+            try
+            {
+                var obj = MathFunc.Eval(MathFunc.Parsing(TL.Scan("0.5^0.3")));
+            }
+            catch (Exception ae)
+            {
+                Assert.AreEqual( "Invalid Antiunitary Opearion", ae.Message );
+            }
         }
         
         [Test]
         public void TestDecimalOnesCompl()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("")));
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("~0.5")));
             Assert.AreEqual("",output);
         }
         
