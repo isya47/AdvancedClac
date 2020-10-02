@@ -136,36 +136,35 @@ namespace AdvancedClac
                 {
                     string tempstr = null;
                     long temp = 0;
-                    double temp2 = 0;
+                    decimal temp2 = 0;
                     if (variables[(char) operands.Peek()] == "Null" || variables[(char) operands.Peek()] == "-Null")
                     {
                         Console.WriteLine("Enter value for '{0}': ", operands.Peek());
                         tempstr = Console.ReadLine();
-                        while (long.TryParse(tempstr, out temp) != true || double.TryParse(tempstr, out temp2) != true)
+                        while (long.TryParse(tempstr, out temp) != true || decimal.TryParse(tempstr, out temp2) != true)
                         {
                             Console.WriteLine("Input is not of the correct format, try again: ");
                             Console.WriteLine("Enter value for '{0}'", operands.Peek());
                         }
 
+                        if (variables[(char) operands.Peek()] == "-Null" && tempstr[0] != '-')
+                            tempstr = '-' + tempstr;
+                        else if (variables[(char) operands.Peek()] == "-Null" && tempstr[0] == '-')
+                            tempstr = tempstr.Substring(1, tempstr.Length - 1);
                         variables[(char) operands.Peek()] = tempstr;
                     }
-                    else if (variables[(char) operands.Peek()] != "Null" || variables[(char) operands.Peek()] != "-Null")
-                    {
-                        tempstr = variables[(char) operands.Peek()];
 
-
-                        if (variables[(char)operands.Peek()] == "Null" && long.TryParse(tempstr, out temp) != true)
+                        if (!variables[(char)operands.Peek()].Contains('-') && variables[(char)operands.Peek()].Contains('.'))
                         {
                             result.Push(decimal.Parse(variables[(char) operands.Dequeue()]));
                         }
-                        else if (variables[(char) operands.Peek()] == "-Null" &&
-                                 long.TryParse(tempstr, out temp) != true)
+                        else if (variables[(char)operands.Peek()].Contains('-') && variables[(char)operands.Peek()].Contains('.'))
                             result.Push(decimal.Parse(variables[(char) operands.Dequeue()]) * -1);
-                        else if (variables[(char) operands.Peek()] == "-Null" && long.TryParse(tempstr, out temp))
+                        else if (variables[(char)operands.Peek()].Contains('-')&& !variables[(char)operands.Peek()].Contains('.'))
                             result.Push(Int64.Parse(variables[(char) operands.Dequeue()]) * -1);
-                        else //(variables[(char) operands.Peek()] == "Null" && long.TryParse(tempstr, out temp))
+                        else 
                             result.Push(Int64.Parse(variables[(char) operands.Dequeue()]));
-                    }
+
                 }
                 else if (operands.Peek() is long||operands.Peek() is decimal)
                 {
@@ -275,6 +274,7 @@ namespace AdvancedClac
                             }
                             else
                             {
+                                //fix
                                 if (impliflag == true)
                                 {
                                     SYA(ref operands, ref operators, "*");
@@ -282,10 +282,19 @@ namespace AdvancedClac
                                 }
 
                                 operands.Enqueue(i.Value[l]);
-                                if(operatorflag!=null&&valueflag==false&&(string) operators.Peek()== "-"&&!variables.ContainsKey(i.Value[l]))
-                                variables.Add(i.Value[l],"-Null");
+                                if (operatorflag != null && valueflag == false && (string) operators.Peek() == "-" &&
+                                    !variables.ContainsKey(i.Value[l]) &&
+                                    (variables[i.Value[l]] != "Null" && variables[i.Value[l]] != "-Null"))
+                                {
+                                    if (variables[i.Value[l]].Contains('.'))
+                                        variables[i.Value[l]] = (decimal.Parse(variables[i.Value[l]]) * -1).ToString();
+                                    else
+                                        variables[i.Value[l]] = (Int64.Parse(variables[i.Value[l]]) * -1).ToString();
+                                }
                                 else if(!variables.ContainsKey(i.Value[l]))
                                     variables.Add(i.Value[l],"Null");
+                                else if(operatorflag!=null&&valueflag==false&&(string) operators.Peek()== "-"&&!variables.ContainsKey(i.Value[l]))
+                                    variables.Add(i.Value[l],"-Null");
                                 operatorflag = null;
                                 valueflag = true;
                                 impliflag = true;
