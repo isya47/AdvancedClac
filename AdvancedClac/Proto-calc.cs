@@ -83,10 +83,8 @@ namespace AdvancedClac
         {
             dynamic num2 = a;
             dynamic result = b;
-            int num3=0;
-            int num4 = 0;
 
-            try
+             try
             {
                 switch (operator1)
                 {
@@ -99,7 +97,7 @@ namespace AdvancedClac
                     case "-":
                         return result - num2;
                     case "pow":
-                        return Math.Pow(result, num2);
+                        return Math.Pow(double.Parse(result.ToString()), double.Parse(num2.ToString()));
                     case "|":
                         return result | num2;
                     case "&":
