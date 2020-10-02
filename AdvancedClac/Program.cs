@@ -10,7 +10,7 @@ namespace AdvancedClac
             Tokenizer TL = new Tokenizer();
             
              //Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("pow(0.5,0.3)"))));
-             Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("2*a"),new Dictionary<char, string>{{'a',"0.2"}})));
+             Console.WriteLine(MathFunc.Eval(MathFunc.Parsing(TL.Scan("pow(2,a)"),new Dictionary<char, string>{{'a',"2"}})));
              //Console.WriteLine(Math.Pow(0.5,0.3));
         }
     }
