@@ -201,8 +201,6 @@ namespace AdvancedClac
         {
             bool valueflag = false;
             bool impliflag = false;
-            bool doubleflag = false;
-            bool logicflag = false;
             if (vari != null)
             {
                 variables = vari;
@@ -216,11 +214,6 @@ namespace AdvancedClac
             //Алгоритм для преврощения строки в очередь в обратную польскую запись
             foreach (var i in stream)
             {
-                if (logicflag == true && doubleflag == true)
-                {
-                    Console.WriteLine("Math Error: decimal numbers are incompatible with logic operations");
-                    return (null);
-                }
 
                 //Console.WriteLine(i.Value);
                 //работа со скобками
@@ -301,7 +294,6 @@ namespace AdvancedClac
                             i.Value.Contains('.'))
                         {
                             operands.Enqueue(decimal.Parse(i.Value) * -1);
-                            doubleflag = true;
                         }
                         else if (operatorflag!=null && valueflag == false && (string) operatorflag== "-" && !i.Value.Contains('.'))
                         {
@@ -311,7 +303,6 @@ namespace AdvancedClac
                                  i.Value.Contains('.'))
                         {
                             operands.Enqueue(decimal.Parse(i.Value));
-                            doubleflag = true;
                         }
                         else if (!(operatorflag!=null && valueflag == false && (string) operatorflag== "-") &&
                                  !i.Value.Contains('.'))
@@ -327,8 +318,6 @@ namespace AdvancedClac
                     }
                    else if (i.TokenType==TokenTypeEnum.Operators){
                     string temp = i.Value;
-                    if (temp == "^" || temp == "&" || temp == "|" || temp == "~")
-                        logicflag = true;
                     if (operatorflag=="+"||operatorflag=="-")
                     {
                         valueflag = false;
