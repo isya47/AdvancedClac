@@ -339,7 +339,7 @@ namespace TestProject1
         public void TestVariableAnd()
         {
             var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("4&a"),new Dictionary<char, string>{{'a',"5"}}));
-            Assert.AreEqual("5",output);
+            Assert.AreEqual("4",output);
         }
         [Test]
         public void TestVariableOr()
