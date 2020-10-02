@@ -213,7 +213,7 @@ namespace AdvancedClac
             foreach (var i in stream)
             {
 
-                //Console.WriteLine(i.Value);
+                Console.WriteLine(i.Value);
                 //работа со скобками
                 if (i.Value == "(")
                     
@@ -226,7 +226,8 @@ namespace AdvancedClac
                         SYA(ref operands,ref operators, "*");
                     operators.Push(i.Value);
                     valueflag = false;
-                    }
+                    impliflag = false;
+                }
                     else if (i.Value == ")"||i.Value==",")
                     {
                         while ((string)operators.Peek() != "(")
@@ -248,6 +249,7 @@ namespace AdvancedClac
                         {
                             operators.Push("(");
                             valueflag = false;
+                            impliflag = false;
                         }
                         else
                         {
@@ -273,8 +275,12 @@ namespace AdvancedClac
                             }
                             else
                             {
-                                if(impliflag==true)
-                                    SYA(ref operands,ref operators, "*");
+                                if (impliflag == true)
+                                {
+                                    SYA(ref operands, ref operators, "*");
+                                    Console.WriteLine("here");
+                                }
+
                                 operands.Enqueue(i.Value[l]);
                                 if(operatorflag!=null&&valueflag==false&&(string) operators.Peek()== "-"&&!variables.ContainsKey(i.Value[l]))
                                 variables.Add(i.Value[l],"-Null");
@@ -356,7 +362,7 @@ namespace AdvancedClac
                 Console.WriteLine(operands.Dequeue());
             }
             Console.WriteLine("end");
-          */
+    */      
             return(operands);
         }
     }
