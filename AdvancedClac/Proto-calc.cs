@@ -135,7 +135,7 @@ namespace AdvancedClac
                 return (operands.Dequeue().ToString());
             while (operands.Count != 0)
             {
-                if (result.Count == 0 && !(operands.Peek() is long || operands.Peek() is double||operands.Peek() is char))
+                if (result.Count == 0 && !(operands.Peek() is long || operands.Peek() is decimal||operands.Peek() is char))
                 {
                     Console.WriteLine("Math error: missing operands or wrong order");
                     return ("NULL");
@@ -143,7 +143,6 @@ namespace AdvancedClac
                 Console.WriteLine(operands.Peek());
                 if (operands.Peek() is char)
                 {
-                    Console.WriteLine("here");
                     string tempstr = null;
                     long temp = 0;
                     double temp2 = 0;
@@ -177,7 +176,7 @@ namespace AdvancedClac
                             result.Push(Int64.Parse(variables[(char) operands.Dequeue()]));
                     }
                 }
-                else if (operands.Peek() is long||operands.Peek() is double)
+                else if (operands.Peek() is long||operands.Peek() is decimal)
                 {
                     result.Push(operands.Dequeue());
                 }
