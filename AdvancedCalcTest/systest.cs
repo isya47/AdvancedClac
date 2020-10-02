@@ -359,5 +359,82 @@ namespace TestProject1
             var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("~a"),new Dictionary<char, string>{{'a',"5"}}));
             Assert.AreEqual("-6",output);
         }
+
+        ///СМЕШАННЫЕ ТЕСТЫ
+
+
+        [Test]
+        public void TestMixture1()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("12+(0.5*a)-1"),
+                new Dictionary<char, string>{{'a',"2"}}));
+            
+            Assert.AreEqual("12",output);
+        }
+        
+        [Test]
+        public void TestMixture2()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("a+b-c*(d/e)"),
+                new Dictionary<char, string>
+                {
+                    {'a',"2"},
+                    {'b',"4"},
+                    {'c',"7"},
+                    {'d',"4"},
+                    {'e',"2"}
+                }));
+            
+            Assert.AreEqual("-8",output);
+        }
+        
+        [Test]
+        public void TestMixture3()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("pow(2,3)-sin(45)+5b"),
+                new Dictionary<char, string>
+                {
+                    {'b',"2"}
+                }));
+            
+            Assert.AreEqual("17.149096475465882",output);
+        }
+        
+        [Test]
+        public void TestMixture4()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("pow(2,3)-sin(45)+5b"),
+                new Dictionary<char, string>
+                {
+                    {'b',"2"}
+                }));
+            
+            Assert.AreEqual("17.149096475465882",output);
+        }
+        
+        [Test]
+        public void TestMixture5()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("a*5+(a/3)"),
+                new Dictionary<char, string>
+                {
+                    {'a',"6"}
+                }));
+            
+            Assert.AreEqual("32",output);
+        }
+        
+        [Test]
+        public void TestMixture6()
+        {
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("a*2 - (-1)"),
+                new Dictionary<char, string>
+                {
+                    {'a',"0.5"}
+                }));
+            
+            Assert.AreEqual("2",output);
+        }
+        
     }
 }
