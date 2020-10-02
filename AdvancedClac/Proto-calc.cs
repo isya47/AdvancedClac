@@ -195,12 +195,12 @@ namespace AdvancedClac
 
                 
             }
-            /*
+            
              //for rounding off
-            if()
-                else
-                */
-            return ( result.Pop().ToString());
+             if (result.Peek() is decimal)
+                 return (((decimal)result.Pop() / 1.000000000000000000000000000000000m).ToString());
+             else
+                 return (result.Pop().ToString());
         }
 //Функция для переводе данных в обратную польскую запись: https://ru.wikipedia.org/wiki/Алгоритм_сортировочной_станции
         //https://en.wikipedia.org/wiki/Shunting-yard_algorithm
