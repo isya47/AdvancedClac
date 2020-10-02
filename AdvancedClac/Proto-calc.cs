@@ -85,40 +85,33 @@ namespace AdvancedClac
             dynamic result = b;
             int num3=0;
             int num4 = 0;
+
             try
             {
-                if (operator1 == "^" || operator1 == "&" || operator1 == "|")
+                switch (operator1)
                 {
-                    if (!(int.TryParse(num2.ToString(), out num3) && int.TryParse(result.ToString(), out num4)))
-                    {
-                        throw new Exception("Math Error: only integers can be used for boolean operations");
-                    }
+                    case "/":
+                        return result / num2;
+                    case "*":
+                        return result * num2;
+                    case "+":
+                        return result + num2;
+                    case "-":
+                        return result - num2;
+                    case "pow":
+                        return Math.Pow(result, num2);
+                    case "|":
+                        return result | num2;
+                    case "&":
+                        return result & num2;
+                    case "^":
+                        return result ^ num2;
                 }
-            }            
-            catch (Exception e)
-            {
-                Console.WriteLine($"Error: {e.Message}");
-                Environment.Exit(6);
             }
 
-            switch (operator1)
+            catch (Exception e)
             {
-                case "/":
-                    return result / num2;
-                case "*":
-                    return result * num2;
-                case "+":
-                    return result + num2;
-                case "-":
-                    return result - num2;
-                case "pow":
-                    return Math.Pow(result, num2);
-                case "|":
-                    return result | num2;
-                case "&":
-                    return result & num2;
-                case "^":
-                    return result ^ num2;
+                throw new Exception("Invalid antiunitary opertaion");
             }
 
             return a;
@@ -375,11 +368,9 @@ namespace AdvancedClac
             {
                 Console.WriteLine(operands.Dequeue());
             }
-
             Console.WriteLine("end");
           */
             return(operands);
         }
     }
 }
-

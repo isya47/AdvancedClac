@@ -236,7 +236,7 @@ namespace TestProject1
         public void TestDecimalPow()
         {
             var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("pow(0.5,0.3)")));
-            Assert.AreEqual("0.8122523963562356",output);
+             Assert.AreEqual("0.8122523963562356",output);
         }
         
         [Test]
@@ -262,7 +262,7 @@ namespace TestProject1
             }
             catch (Exception ae)
             {
-                Assert.AreEqual( "Math Error: decimal numbers are incompatible with logic operations", ae.Message );
+                Assert.AreEqual( "Invalid antiunitary opertaion", ae.Message );
             }
         }
         
@@ -275,7 +275,7 @@ namespace TestProject1
             }
             catch (Exception ae)
             {
-                Assert.AreEqual( "Math Error: decimal numbers are incompatible with logic operations", ae.Message );
+                Assert.AreEqual( "Invalid antiunitary opertaion", ae.Message );
             }
         }
         
@@ -288,7 +288,7 @@ namespace TestProject1
             }
             catch (Exception ae)
             {
-                Assert.AreEqual( "Math Error: decimal numbers are incompatible with logic operations", ae.Message );
+                Assert.AreEqual( "Invalid antiunitary opertaion", ae.Message );
             }
         }
         
