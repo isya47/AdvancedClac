@@ -113,15 +113,18 @@ namespace AdvancedClac
 
                         tokens.Add(new Token(expression[i].ToString(), TokenTypeEnum.Operators));
                     }
+                    
                     else if (Regex.IsMatch(expression[i].ToString(), allowedNumber, RegexOptions.IgnoreCase))
                     {
                         continue;
                     }
+                    
                     else
                     {
                         throw new Exception($"Unknown Symbol at {i}");
                     }
                 }
+                 
                 catch (Exception e)
                 {
                     Console.WriteLine($"Ошибка: {e.Message}");
