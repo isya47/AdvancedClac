@@ -9,7 +9,7 @@
   &lt;/Or&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=79e9fb67_002Ddb41_002D40c8_002D99ca_002D7127383d3359/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="False" ContinuousTestingMode="0" FrameworkVersion="{x:Null}" IsLocked="False" Name="All tests from systest.cs #2" PlatformMonoPreference="{x:Null}" PlatformType="{x:Null}" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
-  &lt;ProjectFile&gt;2FBDDD02-341C-4750-BCC5-1529428F09E4/f:systest.cs&lt;/ProjectFile&gt;
+  &lt;Project Location="/Users/macbookpro/RiderProjects/AdvancedClac/AdvancedCalcTest" Presentation="&amp;lt;AdvancedCalcTest&amp;gt;" /&gt;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=849865b6_002D9241_002D429b_002D8799_002Dfb47324995fd/@EntryIndexedValue">&lt;SessionState ContinuousTestingIsOn="False" ContinuousTestingMode="0" FrameworkVersion="{x:Null}" IsLocked="False" Name="All tests from systest.cs" PlatformMonoPreference="{x:Null}" PlatformType="{x:Null}" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;Project Location="/Users/imufazalov/RiderProjects/AdvancedClac/AdvancedCalcTest" Presentation="&amp;lt;AdvancedCalcTest&amp;gt;" /&gt;

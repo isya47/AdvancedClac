@@ -275,7 +275,7 @@ namespace TestProject1
             }
             catch (Exception ae)
             {
-                Assert.AreEqual( "Invalid antiunitary opertaion", ae.Message );
+                Assert.AreEqual( "Invalid antiunitary operation", ae.Message );
             }
         }
         
@@ -435,6 +435,6 @@ namespace TestProject1
             
             Assert.AreEqual("2",output);
         }
-        
+
     }
 }

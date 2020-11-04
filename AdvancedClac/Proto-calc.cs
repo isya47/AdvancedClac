@@ -14,29 +14,11 @@ namespace AdvancedClac
 {    
     public class MathFunc
     {
-
-        private static Dictionary<char,string> variables=new Dictionary<char, string>();
-        //Метод инициализации данных операторов. Это нужно для более простых вычислении о порядке оператаров.
         private static Dictionary<string, int> initial()
         {
             return(new Dictionary<string, int> {{"pow",4},{"sin",0},{"cos",0},{"tan",0},{"*",3},{"/",3},{"+",2},{"-",2},{"|",1},{"&",2},{"~",4},{"^",2}});
         }
-        /*
-        private enum precedence : ushort
-        {
-            Add=2,
-            Substract=2,
-            Multiply=3,
-            Divide=3,
-            pow=4,
-            sin=4,
-            cos=4,
-            tan=4,
-        }
-        */
 
-
-        
         internal static void oplogic(ref Stack operators, string operatorflag)
         {
             if (operatorflag == (string) operators.Peek())
@@ -61,6 +43,19 @@ namespace AdvancedClac
             }
             operators.Push(temp);
         }
+
+        internal static dynamic NumParse(string a)
+        {
+            dynamic b = a;
+            if (!b.Contains('-') && b.Contains('.'))
+                return(decimal.Parse(b));
+            if (b.Contains('-') && b.Contains('.'))
+                return(decimal.Parse(b) * -1);
+            if (b.Contains('-')&& !b.Contains('.'))
+                return(Int64.Parse(b) * -1);
+            return(Int64.Parse(b));
+        }
+
         internal static double Unitary(double num1, string operator1)
         {
             //double num1 = double.Parse(a);
@@ -116,7 +111,7 @@ namespace AdvancedClac
         }
         
 //Функция исполняющая переведённое выражение 
-        public static string Eval(Queue operands)
+        public static string Eval(Queue operands,Dictionary<char,string> vari=null)
         {
             Dictionary<string, int> precedence = initial();
             Stack result=new Stack();
@@ -132,41 +127,29 @@ namespace AdvancedClac
                     return ("NULL");
                 }
                 Console.WriteLine(operands.Peek());
-                if (operands.Peek() is char)
+                if (operands.Peek() is string&&!precedence.ContainsKey((string) operands.Peek()))
                 {
-                    string tempstr = null;
+                    string tempstr = vari[operands.Peek().ToString()[0]];
                     long temp = 0;
                     decimal temp2 = 0;
-                    if (variables[(char) operands.Peek()] == "Null" || variables[(char) operands.Peek()] == "-Null")
+                    if (!(vari.ContainsKey( operands.Peek().ToString()[0])))
                     {
                         Console.WriteLine("Enter value for '{0}': ", operands.Peek());
                         tempstr = Console.ReadLine();
                         while (long.TryParse(tempstr, out temp) != true || decimal.TryParse(tempstr, out temp2) != true)
-                        {
+                        {    
                             Console.WriteLine("Input is not of the correct format, try again: ");
-                            Console.WriteLine("Enter value for '{0}'", operands.Peek());
+                            Console.WriteLine("Enter value for '{0}'", operands.Peek().ToString()[1]);
+                            tempstr = Console.ReadLine();
                         }
-
-                        if (variables[(char) operands.Peek()] == "-Null" && tempstr[0] != '-')
-                            tempstr = '-' + tempstr;
-                        else if (variables[(char) operands.Peek()] == "-Null" && tempstr[0] == '-')
-                            tempstr = tempstr.Substring(1, tempstr.Length - 1);
-                        variables[(char) operands.Peek()] = tempstr;
                     }
-
-                        if (!variables[(char)operands.Peek()].Contains('-') && variables[(char)operands.Peek()].Contains('.'))
-                        {
-                            result.Push(decimal.Parse(variables[(char) operands.Dequeue()]));
-                        }
-                        else if (variables[(char)operands.Peek()].Contains('-') && variables[(char)operands.Peek()].Contains('.'))
-                            result.Push(decimal.Parse(variables[(char) operands.Dequeue()]) * -1);
-                        else if (variables[(char)operands.Peek()].Contains('-')&& !variables[(char)operands.Peek()].Contains('.'))
-                            result.Push(Int64.Parse(variables[(char) operands.Dequeue()]) * -1);
-                        else 
-                            result.Push(Int64.Parse(variables[(char) operands.Dequeue()]));
-
+                    if(operands.Peek().ToString().Length>1)
+                        result.Push(NumParse(tempstr)*-1);
+                    else
+                        result.Push(NumParse(tempstr));
+                    operands.Dequeue();
                 }
-                else if (operands.Peek() is long||operands.Peek() is decimal)
+                if (operands.Peek() is long||operands.Peek() is decimal)
                 {
                     result.Push(operands.Dequeue());
                 }
@@ -194,14 +177,10 @@ namespace AdvancedClac
         }
 //Функция для переводе данных в обратную польскую запись: https://ru.wikipedia.org/wiki/Алгоритм_сортировочной_станции
         //https://en.wikipedia.org/wiki/Shunting-yard_algorithm
-        public static Queue Parsing(IEnumerable<Token> stream, Dictionary<char,string>vari=null)
+        public static Queue Parsing(IEnumerable<Token> stream)
         {
             bool valueflag = false;
             bool impliflag = false;
-            if (vari != null)
-            {
-                variables = vari;
-            }
             Dictionary<string, int> precedence = initial();
             //Стек для операторов, функции и скобок
             Stack operators = new Stack();
@@ -212,7 +191,7 @@ namespace AdvancedClac
             foreach (var i in stream)
             {
 
-                Console.WriteLine(i.Value);
+                //Console.WriteLine(i.Value);
                 //работа со скобками
                 if (i.Value == "(")
                     
@@ -280,21 +259,27 @@ namespace AdvancedClac
                                     SYA(ref operands, ref operators, "*");
                                     Console.WriteLine("here");
                                 }
-
-                                operands.Enqueue(i.Value[l]);
+                                
+                                if(operatorflag==null)
+                                operands.Enqueue(i.Value[l].ToString());
+                                else if(operatorflag=="-"&&valueflag==false)
+                                    operands.Enqueue(i.Value[l].ToString()+'-');
+                                /*
                                 if (operatorflag != null && valueflag == false && (string) operators.Peek() == "-" &&
-                                    !variables.ContainsKey(i.Value[l]) &&
-                                    (variables[i.Value[l]] != "Null" && variables[i.Value[l]] != "-Null"))
+                                    !variables.ContainsKey(i.Value[l].ToString()) &&
+                                    (variables[i.Value[l].ToString()] != "Null" && variables[i.Value[l].ToString()] != "-Null"))
                                 {
-                                    if (variables[i.Value[l]].Contains('.'))
-                                        variables[i.Value[l]] = (decimal.Parse(variables[i.Value[l]]) * -1).ToString();
+                                    if (variables[i.Value[l].ToString()].Contains('.'))
+                                        variables[i.Value[l].ToString()] = (decimal.Parse(variables[i.Value[l].ToString()]) * -1).ToString();
                                     else
-                                        variables[i.Value[l]] = (Int64.Parse(variables[i.Value[l]]) * -1).ToString();
+                                        variables[i.Value[l].ToString()] = (Int64.Parse(variables[i.Value[l].ToString()]) * -1).ToString();
                                 }
-                                else if(!variables.ContainsKey(i.Value[l]))
-                                    variables.Add(i.Value[l],"Null");
-                                else if(operatorflag!=null&&valueflag==false&&(string) operators.Peek()== "-"&&!variables.ContainsKey(i.Value[l]))
-                                    variables.Add(i.Value[l],"-Null");
+                                
+                                if(operatorflag==null)
+                                    variables.Add(i.Value[l]+counts[i.Value[l].ToString()].ToString(),"Null");
+                                else if(operatorflag!=null&&valueflag==false)
+                                    variables.Add(i.Value[l]+counts[i.Value[l].ToString()].ToString(),"-Null");
+                                    */
                                 operatorflag = null;
                                 valueflag = true;
                                 impliflag = true;
@@ -371,8 +356,23 @@ namespace AdvancedClac
                 Console.WriteLine(operands.Dequeue());
             }
             Console.WriteLine("end");
-    */      
+          */
             return(operands);
         }
+
+        
+        public static string[] MultExec(IEnumerable<Token> stream, Dictionary<char,string>[]vari)
+        {
+            Queue Compiled = MathFunc.Parsing(stream);
+            string[] output = new string[] { };
+            foreach (var l in vari)
+            {
+                Console.WriteLine(MathFunc.Eval(Compiled, l));
+                output.Append(MathFunc.Eval(Compiled, l));
+            }
+
+            return (output);
+        }
+        
     }
 }
