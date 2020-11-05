@@ -536,9 +536,9 @@ namespace TestProject1
                     {'b',"3"}
                 }
             };
-            
             var output = MathFunc.MultExec(TL.Scan("a*b+c"), collection);
             var expected = new string[] { "4", "1.5", "8"};
+            
             CollectionAssert.AreEqual(expected, output);
         }
        
