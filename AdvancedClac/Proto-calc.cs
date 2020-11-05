@@ -362,13 +362,20 @@ namespace AdvancedClac
             Queue Compiled = MathFunc.Parsing(stream);
             Queue backup =new Queue(Compiled);
             string[] output=new string[vari.Length];
-            for(int i=0;i<vari.Length;i++)
+            try
             {
-                output[i] = (MathFunc.Eval(Compiled, vari[i]));
-                Compiled = new Queue(backup);
+                for (int i = 0; i < vari.Length; i++)
+                {
+                    output[i] = (MathFunc.Eval(Compiled, vari[i]));
+                    Compiled = new Queue(backup);
+                }
+                return (output);
             }
 
-            return (output);
+            catch (Exception e)
+            {
+                throw new Exception("Error occured during processing the equation");
+            }
         }
         
     }

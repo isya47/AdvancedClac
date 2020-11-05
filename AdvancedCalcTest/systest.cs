@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using System.IO.Pipes;
 using System.Diagnostics;
+using System.Linq.Expressions;
 
 namespace TestProject1
 {
@@ -516,30 +517,35 @@ namespace TestProject1
         [Test]
         public void TestMultVariableCollection3()
         {
-            var collection = new Dictionary<char, string>[]
+            try
             {
-                new Dictionary<char, string>
+                var collection = new Dictionary<char, string>[]
                 {
-                    {'a',"0.5"},
-                    {'b',"2"},
-                    {'c',"3"}
-                },
-                new Dictionary<char, string>
-                {
-                    {'a', "2"},
-                    {'b',"0.5"},
-                    {'c',"0.5"}
-                },
-                new Dictionary<char, string>
-                {
-                    {'a', "5"},
-                    {'b',"3"}
-                }
-            };
-            var output = MathFunc.MultExec(TL.Scan("a*b+c"), collection);
-            var expected = new string[] { "4", "1.5", "8"};
-            
-            CollectionAssert.AreEqual(expected, output);
+                    new Dictionary<char, string>
+                    {
+                        {'a',"0.5"},
+                        {'b',"2"},
+                        {'c',"3"}
+                    },
+                    new Dictionary<char, string>
+                    {
+                        {'a', "2"},
+                        {'b',"0.5"},
+                        {'c',"0.5"}
+                    },
+                    new Dictionary<char, string>
+                    {
+                        {'a', "5"},
+                        {'b',"3"}
+                    }
+                };
+                var output = MathFunc.MultExec(TL.Scan("a*b+c"), collection);
+                var expected = new string[] { "4", "1.5", "8"};
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual( "Error occured during processing the equation", e.Message );
+            }
         }
        
 
