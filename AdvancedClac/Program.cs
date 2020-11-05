@@ -28,6 +28,7 @@ namespace AdvancedClac
                      {'a', "5"}
                  }
              };
+             
             
              MathFunc.MultExec(TL.Scan("a*2"), collection);
              Console.WriteLine(MathFunc.MultExec(TL.Scan("a*2"), collection));
