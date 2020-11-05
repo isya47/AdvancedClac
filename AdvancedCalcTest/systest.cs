@@ -457,7 +457,7 @@ namespace TestProject1
         }
 
         [Test]
-        public void TestMultVariableCollection()
+        public void TestMultVariableCollection1()
         {
             var collection = new Dictionary<char, string>[]
             {
@@ -480,8 +480,69 @@ namespace TestProject1
             var expected = new string[] { "1", "4", "10"};
             
             CollectionAssert.AreEqual(expected, output);
-
         }
+        
+        [Test]
+        public void TestMultVariableCollection2()
+        {
+            var collection = new Dictionary<char, string>[]
+            {
+                new Dictionary<char, string>
+                {
+                    {'a',"0.5"},
+                    {'b',"2"},
+                    {'c',"3"}
+                },
+                new Dictionary<char, string>
+                {
+                    {'a', "2"},
+                    {'b',"0.5"},
+                    {'c',"0.5"}
+                },
+                new Dictionary<char, string>
+                {
+                    {'a', "5"},
+                    {'b',"3"},
+                    {'c',"-7"}
+                }
+            };
+            
+            var output = MathFunc.MultExec(TL.Scan("a*b+c"), collection);
+            var expected = new string[] { "4", "1.5", "8"};
+            
+            CollectionAssert.AreEqual(expected, output);
+        }
+        
+        [Test]
+        public void TestMultVariableCollection3()
+        {
+            var collection = new Dictionary<char, string>[]
+            {
+                new Dictionary<char, string>
+                {
+                    {'a',"0.5"},
+                    {'b',"2"},
+                    {'c',"3"}
+                },
+                new Dictionary<char, string>
+                {
+                    {'a', "2"},
+                    {'b',"0.5"},
+                    {'c',"0.5"}
+                },
+                new Dictionary<char, string>
+                {
+                    {'a', "5"},
+                    {'b',"3"}
+                }
+            };
+            
+            var output = MathFunc.MultExec(TL.Scan("a*b+c"), collection);
+            var expected = new string[] { "4", "1.5", "8"};
+            
+            CollectionAssert.AreEqual(expected, output);
+        }
+       
 
     }
 }
