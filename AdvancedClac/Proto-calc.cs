@@ -367,7 +367,7 @@ namespace AdvancedClac
             string[] output=new string[vari.Length];
             for(int i=0;i<vari.Length;i++)
             {
-                output.Append(MathFunc.Eval(Compiled, vari[i]));
+                output[i] = (MathFunc.Eval(Compiled, vari[i]));
                 Compiled = new Queue(backup);
             }
 

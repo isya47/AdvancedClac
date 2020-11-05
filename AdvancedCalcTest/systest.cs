@@ -477,8 +477,9 @@ namespace TestProject1
             };
             
             var output = MathFunc.MultExec(TL.Scan("a*2"), collection);
-            var expected = new string[] { "1", "4", "10"};    
-            Assert.AreEqual(expected, output);
+            var expected = new string[] { "1", "4", "10"};
+            
+            CollectionAssert.AreEqual(expected, output);
 
         }
 
