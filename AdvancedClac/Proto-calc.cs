@@ -47,12 +47,8 @@ namespace AdvancedClac
         internal static dynamic NumParse(string a)
         {
             dynamic b = a;
-            if (!b.Contains('-') && b.Contains('.'))
+            if (b.Contains('.'))
                 return(decimal.Parse(b));
-            if (b.Contains('-') && b.Contains('.'))
-                return(decimal.Parse(b) * -1);
-            if (b.Contains('-')&& !b.Contains('.'))
-                return(Int64.Parse(b) * -1);
             return(Int64.Parse(b));
         }
 
@@ -143,6 +139,7 @@ namespace AdvancedClac
                             tempstr = Console.ReadLine();
                         }
                     }
+                    
                     if(operands.Peek().ToString().Length>1)
                         result.Push(NumParse(tempstr)*-1);
                     else
