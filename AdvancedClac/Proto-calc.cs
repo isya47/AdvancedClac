@@ -126,7 +126,7 @@ namespace AdvancedClac
                     Console.WriteLine("Math error: missing operands or wrong order");
                     return ("NULL");
                 }
-                Console.WriteLine(operands.Peek());
+                
                 if (operands.Peek() is string&&!precedence.ContainsKey((string) operands.Peek()))
                 {
                     string tempstr = vari[operands.Peek().ToString()[0]];
@@ -257,7 +257,6 @@ namespace AdvancedClac
                                 if (impliflag == true)
                                 {
                                     SYA(ref operands, ref operators, "*");
-                                    Console.WriteLine("here");
                                 }
                                 
                                 if(operatorflag==null)
