@@ -35,6 +35,7 @@ namespace AdvancedClac
              {
                  Console.WriteLine(MathFunc.Eval(Compiled, collection[i]));
                  Compiled = new Queue(backup);
+                 
              }
              
         }
