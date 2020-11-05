@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace AdvancedClac
@@ -28,10 +29,13 @@ namespace AdvancedClac
                      {'a', "5"}
                  }
              };
-             
-            
-             MathFunc.MultExec(TL.Scan("a*2"), collection);
-             Console.WriteLine(MathFunc.MultExec(TL.Scan("a*2"), collection));
+             Queue Compiled = MathFunc.Parsing(TL.Scan("a*2"));
+             Queue backup =new Queue(Compiled);
+             for(int i=0;i<collection.Length;i++)
+             {
+                 Console.WriteLine(MathFunc.Eval(Compiled, collection[i]));
+                 Compiled = new Queue(backup);
+             }
         }
     }
 }

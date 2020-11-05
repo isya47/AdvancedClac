@@ -363,11 +363,12 @@ namespace AdvancedClac
         public static string[] MultExec(IEnumerable<Token> stream, Dictionary<char,string>[]vari)
         {
             Queue Compiled = MathFunc.Parsing(stream);
-            string[] output = new string[] { };
-            foreach (var l in vari)
+            Queue backup =new Queue(Compiled);
+            string[] output=new string[vari.Length];
+            for(int i=0;i<vari.Length;i++)
             {
-                Console.WriteLine(MathFunc.Eval(Compiled, l));
-                output.Append(MathFunc.Eval(Compiled, l));
+                output.Append(MathFunc.Eval(Compiled, vari[i]));
+                Compiled = new Queue(backup);
             }
 
             return (output);
