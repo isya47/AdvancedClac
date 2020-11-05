@@ -456,5 +456,31 @@ namespace TestProject1
             Assert.AreEqual("2",output);
         }
 
+        [Test]
+        public void TestMultVariableCollection()
+        {
+            var collection = new Dictionary<char, string>[]
+            {
+                new Dictionary<char, string>
+                {
+                    {'a',"0.5"}
+                    
+                },
+                new Dictionary<char, string>
+                {
+                    {'a', "2"}
+                },
+                new Dictionary<char, string>
+                {
+                    {'a', "5"}
+                }
+            };
+            
+            var output = MathFunc.MultExec(TL.Scan("a*2"), collection);
+            var expected = new string[] { "1", "4", "10"};    
+            Assert.AreEqual(expected, output);
+
+        }
+
     }
 }
