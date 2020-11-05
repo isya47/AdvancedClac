@@ -262,7 +262,7 @@ namespace TestProject1
             }
             catch (Exception ae)
             {
-                Assert.AreEqual( "Invalid antiunitary opertaion", ae.Message );
+                Assert.AreEqual( "Invalid antiunitary operation", ae.Message );
             }
         }
         
@@ -288,7 +288,7 @@ namespace TestProject1
             }
             catch (Exception ae)
             {
-                Assert.AreEqual( "Invalid antiunitary opertaion", ae.Message );
+                Assert.AreEqual( "Invalid antiunitary operation", ae.Message );
             }
         }
         
@@ -308,55 +308,73 @@ namespace TestProject1
         [Test]
         public void TestVariableAddition()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("10+a"),new Dictionary<char, string>{{'a',"2"}}));
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("10+a")), 
+                new Dictionary<char, string>{{'a',"2"}}
+                );
             Assert.AreEqual("12",output);
         }
         [Test]
         public void TestVariableSubtraction()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("10-a"),new Dictionary<char, string>{{'a',"2"}}));
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("10-a")),
+                new Dictionary<char, string>{{'a',"2"}}
+                );
             Assert.AreEqual("8",output);
         }
         [Test]
         public void TestVariableMultiplication()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("10a"),new Dictionary<char, string>{{'a',"2"}}));
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("10a")),
+                new Dictionary<char, string>{{'a',"2"}}
+                );
             Assert.AreEqual("20",output);
         }
         [Test]
         public void TestVariableDivision()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("10/a"),new Dictionary<char, string>{{'a',"2"}}));
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("10/a")),
+                new Dictionary<char, string>{{'a',"2"}}
+            );
             Assert.AreEqual("5",output);
         }
         [Test]
         public void TestVariablePow()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("pow(2,a)"),new Dictionary<char, string>{{'a',"2"}}));
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("pow(2,a)")),
+                new Dictionary<char, string>{{'a',"2"}}
+                );
             Assert.AreEqual("4",output);
         }
         [Test]
         public void TestVariableAnd()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("4&a"),new Dictionary<char, string>{{'a',"5"}}));
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("4&a")),
+                new Dictionary<char, string>{{'a',"5"}}
+            );
             Assert.AreEqual("4",output);
         }
         [Test]
         public void TestVariableOr()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("4|a"),new Dictionary<char, string>{{'a',"5"}}));
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("4|a")),
+                new Dictionary<char, string>{{'a',"5"}}
+                );
             Assert.AreEqual("5",output);
         }
         [Test]
         public void TestVariableXor()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("10^a"),new Dictionary<char, string>{{'a',"5"}}));
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("10^a")),
+                new Dictionary<char, string>{{'a',"5"}}
+                );
             Assert.AreEqual("15",output);
         }
         [Test]
         public void TestVariableComplement()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("~a"),new Dictionary<char, string>{{'a',"5"}}));
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("~a")),
+                new Dictionary<char, string>{{'a',"5"}}
+            );
             Assert.AreEqual("-6",output);
         }
 
@@ -366,8 +384,9 @@ namespace TestProject1
         [Test]
         public void TestMixture1()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("12+(0.5*a)-1"),
-                new Dictionary<char, string>{{'a',"2"}}));
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("12+(0.5*a)-1")),
+            new Dictionary<char, string>{{'a',"2"}}
+            );
             
             Assert.AreEqual("12",output);
         }
@@ -375,7 +394,7 @@ namespace TestProject1
         [Test]
         public void TestMixture2()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("a+b-c*(d/e)"),
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("a+b-c*(d/e)")),
                 new Dictionary<char, string>
                 {
                     {'a',"2"},
@@ -383,7 +402,7 @@ namespace TestProject1
                     {'c',"7"},
                     {'d',"4"},
                     {'e',"2"}
-                }));
+                });
             
             Assert.AreEqual("-8",output);
         }
@@ -391,11 +410,12 @@ namespace TestProject1
         [Test]
         public void TestMixture3()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("pow(2,3)-sin(45)+5b"),
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("pow(2,3)-sin(45)+5b")),
                 new Dictionary<char, string>
                 {
                     {'b',"2"}
-                }));
+                }
+                );
             
             Assert.AreEqual("17.149096475465882",output);
         }
@@ -403,11 +423,12 @@ namespace TestProject1
         [Test]
         public void TestMixture4()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("pow(2,3)-sin(45)+5b"),
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("pow(2,3)-sin(45)+5b")),
                 new Dictionary<char, string>
                 {
                     {'b',"2"}
-                }));
+                }
+                );
             
             Assert.AreEqual("17.149096475465882",output);
         }
@@ -415,11 +436,11 @@ namespace TestProject1
         [Test]
         public void TestMixture5()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("a*5+(a/3)"),
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("a*5+(a/3)")),
                 new Dictionary<char, string>
                 {
                     {'a',"6"}
-                }));
+                });
             
             Assert.AreEqual("32",output);
         }
@@ -427,12 +448,11 @@ namespace TestProject1
         [Test]
         public void TestMixture6()
         {
-            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("a*2 - (-1)"),
+            var output = MathFunc.Eval(MathFunc.Parsing(TL.Scan("a*2 - (-1)")),
                 new Dictionary<char, string>
                 {
                     {'a',"0.5"}
-                }));
-            
+                });
             Assert.AreEqual("2",output);
         }
 

@@ -104,7 +104,7 @@ namespace AdvancedClac
 
             catch (Exception e)
             {
-                throw new Exception("Invalid antiunitary opertaion");
+                throw new Exception("Invalid antiunitary operation");
             }
 
             return a;
